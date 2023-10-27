@@ -26,7 +26,7 @@ library(lubridate)
 ```{r load-data}
 # load your data 
 formula_e <- read.csv("data/formula_e_race_results.csv")
-formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date) 
+formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date) %>% mutate(race_city = substring(race_name,5)) 
 
 filter(formula_e, rank==1) %>% select(., season, race_num, time_retired) %>% arrange(season) %>% arrange(race_num)
 
