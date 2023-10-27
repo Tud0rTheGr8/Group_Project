@@ -26,10 +26,7 @@ library(lubridate)
 ```{r load-data}
 # load your data 
 formula_e <- read.csv("data/formula_e_race_results.csv")
-formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date) %>%
-  group_by(race_name) %>%
-  group_by(driver) %>%
-  arrange(time_retired)
+formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date) 
 
 
 
