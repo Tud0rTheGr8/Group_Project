@@ -21,6 +21,9 @@ output:
 # the `xaringan` package that contains all of the code which allows you 
 # to create presentation slides in Rmarkdown
 install.packages('xaringan')
+install.packages("tidymodels")
+install.packages("palmerpenguins")
+install.packages("xaringanthemer")
 ```
 
 
