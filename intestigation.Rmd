@@ -31,7 +31,28 @@ formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date)
 
 filter(formula_e, rank==1) %>% select(., season, race_city, time_retired) %>% arrange(season) 
 
-
 ```
+
+
+```{r calculate average rank}
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(team, nrank) %>% 
+  group_by(team) %>% 
+  summarise(vAverage_Team_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "team")
+
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(driver, nrank) %>% 
+  group_by(driver) %>% 
+  summarise(Average_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "driver")
+```
+
+
+
 
 
