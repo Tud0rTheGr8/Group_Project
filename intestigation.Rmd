@@ -76,7 +76,10 @@ formula_e_rank1_mini %>%
   geom_smooth(se = FALSE, method = "lm", formula='y~x')
 
 ```
-
+##Tudor: Finish time vs season graph & fix time format
+##Sun: Frequency table of teams reaching top 5 ranks in each race
+##Lucien: Average time distribution
+##ybx: Modelling
 
 
 
