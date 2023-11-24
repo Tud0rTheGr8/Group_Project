@@ -71,9 +71,9 @@ formula_e <- left_join(formula_e, formu, by = "driver")
 ```{r rank 1 times over time}
 
 formula_e_rank1_mini %>%
-  ggplot(mapping = aes(x = season, y = time_retired, color = race_city)) +
+  ggplot(mapping = aes(x = season, y = time_retired, color = race_city, group_by=race_city)) +
   geom_point() +
-  geom_smooth(se = FALSE, method = "lm")
+  geom_smooth(se = FALSE, method = "lm", formula='y~x')
 
 ```
 
