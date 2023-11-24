@@ -34,7 +34,8 @@ formula_e_rank1 <- filter(formula_e, rank==1) %>% select(., season, race_city, t
 formula_e_rank1 %>%
   count(race_city)
 
-formula_e_rank1
+formula_e_rank1 %>%
+  arrange(time_retired)
 
 formula_e_rank1_mini <- formula_e_rank1 %>%
   filter(race_city == "Berlin" | 
