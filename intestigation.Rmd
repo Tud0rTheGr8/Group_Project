@@ -94,11 +94,14 @@ top_5_teams <- formula_e_with_nrank %>%
 
 top_5_teams_summary <- top_5_teams %>%
   group_by(season, race_city, team) %>%
+      mutate(team = case_when(team == "Audi Sport ABT" ~ "Audi",
+                            team == "e.dams-Renault" ~ "e.Dams-Renault",
+                            TRUE ~ team)) %>%
   count()
 
 print(top_5_teams_summary)
 
-selected_cities <- c("Mexico City", "Riyadh", "Monaco", "Paris")
+selected_cities <- c("Mexico City", "Berlin")#Berlin is more staight
 
 selected_cities_data <- top_5_teams_summary %>%
   filter(race_city %in% selected_cities)
@@ -120,6 +123,61 @@ histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, 
   scale_fill_discrete(name = "Team")
 
 print(histogram_top_teams_selected_cities)
+
+mean_frequency_by_season <- top_5_teams_summary %>%
+  group_by(season) %>%
+  summarise(mean_frequency = mean(n), .groups = "keep")
+
+line_plot_mean_frequency <- ggplot(mean_frequency_by_season, aes(x = season, y = mean_frequency)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Mean Frequency of Top 5 Finishes by Season",
+       x = "Season",
+       y = "Mean Frequency") +
+  theme_minimal()
+
+print(line_plot_mean_frequency)
+
+top5_by_city_and_season <- formula_e %>%
+  filter(rank %in% 1:5,race_city %in% c("Mexico City", "Berlin")) %>%
+  group_by(season,race_city,team) %>%
+  summarise(total_top5_count = n(), .groups = "keep") %>%
+  arrange(season,race_city,team)
+
+sum_of_seasons <- formula_e %>%
+  filter(rank %in% 1:5, race_city %in% c("Mexico City", "Berlin")) %>% 
+  group_by(race_city,team) %>%
+  summarise(total_top5_count = sum(rank %in% 1:5), .groups = "keep")
+
+  print(top5_by_city_and_season)
+
+  print(sum_of_seasons)
+  #Berlin - 6, mexico - 5
+
+  
+  top_5_teams_summary <- top_5_teams_summary %>%
+    filter( race_city %in% c("Mexico City", "Berlin"))
+  
+  top_5_mean_totals <- top_5_teams_summary %>%
+    group_by(race_city, team) %>%
+    summarise(total = sum(n)) %>%
+    mutate(mean_total = case_when(race_city == "Berlin" ~ total / 6,
+                                  race_city == "Mexico City" ~ total / 5)) %>%
+    filter(mean_total > 0.2)
+
+
+  top_5_mean_totals %>%
+    ggplot(mapping = aes(x = team, y = mean_total, fill = team)) +
+    geom_bar(stat = "identity")+
+    facet_grid(cols = vars(race_city)) + 
+    coord_flip() 
+    
+
+  print(top_5_mean_totals) 
+ ## print(histogram_top_5_mean_totals)
+ 
+
+
 
 ```
 
