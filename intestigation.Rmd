@@ -81,5 +81,47 @@ formula_e_rank1_mini %>%
 ##Lucien: Average time distribution
 ##ybx: Modelling
 
+```{r top 5 frequency}
+
+formula_e_with_nrank <- formula_e %>%
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank = as.numeric(rank)) 
+
+top_5_teams <- formula_e_with_nrank %>%
+  filter(nrank <= 5) %>%
+  select(season, race_city, team, nrank) %>%
+  arrange(season, race_city, nrank)
+
+top_5_teams_summary <- top_5_teams %>%
+  group_by(season, race_city, team) %>%
+  count()
+
+print(top_5_teams_summary)
+
+selected_cities <- c("Mexico City", "Riyadh", "Monaco", "Paris")
+
+selected_cities_data <- top_5_teams_summary %>%
+  filter(race_city %in% selected_cities)
+
+top_teams_selected_cities <- selected_cities_data %>%
+  group_by(team) %>%
+  summarise(total_frequency = sum(n), .groups = "keep") %>%
+  top_n(3, total_frequency)
+
+filtered_data <- selected_cities_data %>%
+  filter(team %in% top_teams_selected_cities$team)
+
+histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, fill = factor(team))) +
+  geom_bar(position = "dodge", stat = "count") +
+  labs(title = "Top Teams' Performance in Selected Cities",
+       x = "Race Track",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_discrete(name = "Team")
+
+print(histogram_top_teams_selected_cities)
+
+```
+
 
 

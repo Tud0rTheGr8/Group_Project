@@ -11,7 +11,7 @@
 
 <meta name="author" content="by Knights Templar: Tudor,Mengchuan Sun, Jiacheng Zhang,Binxi Yang" />
 
-<meta name="date" content="2023-11-10" />
+<meta name="date" content="2023-11-26" />
 
 <title>IDS investigation worksheet</title>
 
@@ -353,7 +353,7 @@ display: none;
 <h1 class="title toc-ignore">IDS investigation worksheet</h1>
 <h4 class="author">by Knights Templar: Tudor,Mengchuan Sun, Jiacheng
 Zhang,Binxi Yang</h4>
-<h4 class="date">2023-11-10</h4>
+<h4 class="date">2023-11-26</h4>
 
 </div>
 
@@ -370,8 +370,8 @@ project.</p>
 library(lubridate)</code></pre>
 <pre class="r"><code># load your data 
 formula_e &lt;- read.csv(&quot;data/formula_e_race_results.csv&quot;)
-formula_e &lt;- formula_e %&gt;% mutate(race_city = substring(race_name,5))
-formula_e %&gt;% mutate(race_date = ymd(race_date)) %&gt;% arrange(race_date) </code></pre>
+formula_e &lt;- formula_e %&gt;% mutate(race_city = substring(race_name,6))
+formula_e %&gt;% mutate(race_date = ymd(race_date)) %&gt;% arrange(race_date)</code></pre>
 <pre><code>##      season race_num                 race_name  race_date
 ## 1         1        1              2014 Beijing 2014-09-13
 ## 2         1        1              2014 Beijing 2014-09-13
@@ -4815,1560 +4815,1628 @@ formula_e %&gt;% mutate(race_date = ymd(race_date)) %&gt;% arrange(race_date) </
 ## 1478       22   12   26           Collision7        0        0         0      0
 ## 1479       23   17   16            Collision        0        0         0      0
 ## 1480       24   21    0        Did not start        0        0         0      0
-##                  race_city
-## 1                  Beijing
-## 2                  Beijing
-## 3                  Beijing
-## 4                  Beijing
-## 5                  Beijing
-## 6                  Beijing
-## 7                  Beijing
-## 8                  Beijing
-## 9                  Beijing
-## 10                 Beijing
-## 11                 Beijing
-## 12                 Beijing
-## 13                 Beijing
-## 14                 Beijing
-## 15                 Beijing
-## 16                 Beijing
-## 17                 Beijing
-## 18                 Beijing
-## 19                 Beijing
-## 20                 Beijing
-## 21               Putrajaya
-## 22               Putrajaya
-## 23               Putrajaya
-## 24               Putrajaya
-## 25               Putrajaya
-## 26               Putrajaya
-## 27               Putrajaya
-## 28               Putrajaya
-## 29               Putrajaya
-## 30               Putrajaya
-## 31               Putrajaya
-## 32               Putrajaya
-## 33               Putrajaya
-## 34               Putrajaya
-## 35               Putrajaya
-## 36               Putrajaya
-## 37               Putrajaya
-## 38               Putrajaya
-## 39               Putrajaya
-## 40               Putrajaya
-## 41          Punta del Este
-## 42          Punta del Este
-## 43          Punta del Este
-## 44          Punta del Este
-## 45          Punta del Este
-## 46          Punta del Este
-## 47          Punta del Este
-## 48          Punta del Este
-## 49          Punta del Este
-## 50          Punta del Este
-## 51          Punta del Este
-## 52          Punta del Este
-## 53          Punta del Este
-## 54          Punta del Este
-## 55          Punta del Este
-## 56          Punta del Este
-## 57          Punta del Este
-## 58          Punta del Este
-## 59          Punta del Este
-## 60          Punta del Este
-## 61            Buenos Aires
-## 62            Buenos Aires
-## 63            Buenos Aires
-## 64            Buenos Aires
-## 65            Buenos Aires
-## 66            Buenos Aires
-## 67            Buenos Aires
-## 68            Buenos Aires
-## 69            Buenos Aires
-## 70            Buenos Aires
-## 71            Buenos Aires
-## 72            Buenos Aires
-## 73            Buenos Aires
-## 74            Buenos Aires
-## 75            Buenos Aires
-## 76            Buenos Aires
-## 77            Buenos Aires
-## 78            Buenos Aires
-## 79            Buenos Aires
-## 80            Buenos Aires
-## 81                   Miami
-## 82                   Miami
-## 83                   Miami
-## 84                   Miami
-## 85                   Miami
-## 86                   Miami
-## 87                   Miami
-## 88                   Miami
-## 89                   Miami
-## 90                   Miami
-## 91                   Miami
-## 92                   Miami
-## 93                   Miami
-## 94                   Miami
-## 95                   Miami
-## 96                   Miami
-## 97                   Miami
-## 98                   Miami
-## 99                   Miami
-## 100                  Miami
-## 101             Long Beach
-## 102             Long Beach
-## 103             Long Beach
-## 104             Long Beach
-## 105             Long Beach
-## 106             Long Beach
-## 107             Long Beach
-## 108             Long Beach
-## 109             Long Beach
-## 110             Long Beach
-## 111             Long Beach
-## 112             Long Beach
-## 113             Long Beach
-## 114             Long Beach
-## 115             Long Beach
-## 116             Long Beach
-## 117             Long Beach
-## 118             Long Beach
-## 119             Long Beach
-## 120             Long Beach
-## 121                 Monaco
-## 122                 Monaco
-## 123                 Monaco
-## 124                 Monaco
-## 125                 Monaco
-## 126                 Monaco
-## 127                 Monaco
-## 128                 Monaco
-## 129                 Monaco
-## 130                 Monaco
-## 131                 Monaco
-## 132                 Monaco
-## 133                 Monaco
-## 134                 Monaco
-## 135                 Monaco
-## 136                 Monaco
-## 137                 Monaco
-## 138                 Monaco
-## 139                 Monaco
-## 140                 Monaco
-## 141                 Berlin
-## 142                 Berlin
-## 143                 Berlin
-## 144                 Berlin
-## 145                 Berlin
-## 146                 Berlin
-## 147                 Berlin
-## 148                 Berlin
-## 149                 Berlin
-## 150                 Berlin
-## 151                 Berlin
-## 152                 Berlin
-## 153                 Berlin
-## 154                 Berlin
-## 155                 Berlin
-## 156                 Berlin
-## 157                 Berlin
-## 158                 Berlin
-## 159                 Berlin
-## 160                 Berlin
-## 161                 Moscow
-## 162                 Moscow
-## 163                 Moscow
-## 164                 Moscow
-## 165                 Moscow
-## 166                 Moscow
-## 167                 Moscow
-## 168                 Moscow
-## 169                 Moscow
-## 170                 Moscow
-## 171                 Moscow
-## 172                 Moscow
-## 173                 Moscow
-## 174                 Moscow
-## 175                 Moscow
-## 176                 Moscow
-## 177                 Moscow
-## 178                 Moscow
-## 179                 Moscow
-## 180                 Moscow
-## 181                 London
-## 182                 London
-## 183                 London
-## 184                 London
-## 185                 London
-## 186                 London
-## 187                 London
-## 188                 London
-## 189                 London
-## 190                 London
-## 191                 London
-## 192                 London
-## 193                 London
-## 194                 London
-## 195                 London
-## 196                 London
-## 197                 London
-## 198                 London
-## 199                 London
-## 200                 London
-## 201          London race 2
-## 202          London race 2
-## 203          London race 2
-## 204          London race 2
-## 205          London race 2
-## 206          London race 2
-## 207          London race 2
-## 208          London race 2
-## 209          London race 2
-## 210          London race 2
-## 211          London race 2
-## 212          London race 2
-## 213          London race 2
-## 214          London race 2
-## 215          London race 2
-## 216          London race 2
-## 217          London race 2
-## 218          London race 2
-## 219          London race 2
-## 220          London race 2
-## 221                Beijing
-## 222                Beijing
-## 223                Beijing
-## 224                Beijing
-## 225                Beijing
-## 226                Beijing
-## 227                Beijing
-## 228                Beijing
-## 229                Beijing
-## 230                Beijing
-## 231                Beijing
-## 232                Beijing
-## 233                Beijing
-## 234                Beijing
-## 235                Beijing
-## 236                Beijing
-## 237                Beijing
-## 238                Beijing
-## 239                Beijing
-## 240                Beijing
-## 241              Putrajaya
-## 242              Putrajaya
-## 243              Putrajaya
-## 244              Putrajaya
-## 245              Putrajaya
-## 246              Putrajaya
-## 247              Putrajaya
-## 248              Putrajaya
-## 249              Putrajaya
-## 250              Putrajaya
-## 251              Putrajaya
-## 252              Putrajaya
-## 253              Putrajaya
-## 254              Putrajaya
-## 255              Putrajaya
-## 256              Putrajaya
-## 257              Putrajaya
-## 258              Putrajaya
-## 259         Punta del Este
-## 260         Punta del Este
-## 261         Punta del Este
-## 262         Punta del Este
-## 263         Punta del Este
-## 264         Punta del Este
-## 265         Punta del Este
-## 266         Punta del Este
-## 267         Punta del Este
-## 268         Punta del Este
-## 269         Punta del Este
-## 270         Punta del Este
-## 271         Punta del Este
-## 272         Punta del Este
-## 273         Punta del Este
-## 274         Punta del Este
-## 275         Punta del Este
-## 276         Punta del Este
-## 277           Buenos Aires
-## 278           Buenos Aires
-## 279           Buenos Aires
-## 280           Buenos Aires
-## 281           Buenos Aires
-## 282           Buenos Aires
-## 283           Buenos Aires
-## 284           Buenos Aires
-## 285           Buenos Aires
-## 286           Buenos Aires
-## 287           Buenos Aires
-## 288           Buenos Aires
-## 289           Buenos Aires
-## 290           Buenos Aires
-## 291           Buenos Aires
-## 292           Buenos Aires
-## 293           Buenos Aires
-## 294           Buenos Aires
-## 295            Mexico City
-## 296            Mexico City
-## 297            Mexico City
-## 298            Mexico City
-## 299            Mexico City
-## 300            Mexico City
-## 301            Mexico City
-## 302            Mexico City
-## 303            Mexico City
-## 304            Mexico City
-## 305            Mexico City
-## 306            Mexico City
-## 307            Mexico City
-## 308            Mexico City
-## 309            Mexico City
-## 310            Mexico City
-## 311            Mexico City
-## 312            Mexico City
-## 313             Long Beach
-## 314             Long Beach
-## 315             Long Beach
-## 316             Long Beach
-## 317             Long Beach
-## 318             Long Beach
-## 319             Long Beach
-## 320             Long Beach
-## 321             Long Beach
-## 322             Long Beach
-## 323             Long Beach
-## 324             Long Beach
-## 325             Long Beach
-## 326             Long Beach
-## 327             Long Beach
-## 328             Long Beach
-## 329             Long Beach
-## 330             Long Beach
-## 331                  Paris
-## 332                  Paris
-## 333                  Paris
-## 334                  Paris
-## 335                  Paris
-## 336                  Paris
-## 337                  Paris
-## 338                  Paris
-## 339                  Paris
-## 340                  Paris
-## 341                  Paris
-## 342                  Paris
-## 343                  Paris
-## 344                  Paris
-## 345                  Paris
-## 346                  Paris
-## 347                  Paris
-## 348                  Paris
-## 349                 Berlin
-## 350                 Berlin
-## 351                 Berlin
-## 352                 Berlin
-## 353                 Berlin
-## 354                 Berlin
-## 355                 Berlin
-## 356                 Berlin
-## 357                 Berlin
-## 358                 Berlin
-## 359                 Berlin
-## 360                 Berlin
-## 361                 Berlin
-## 362                 Berlin
-## 363                 Berlin
-## 364                 Berlin
-## 365                 Berlin
-## 366                 Berlin
-## 367                 London
-## 368                 London
-## 369                 London
-## 370                 London
-## 371                 London
-## 372                 London
-## 373                 London
-## 374                 London
-## 375                 London
-## 376                 London
-## 377                 London
-## 378                 London
-## 379                 London
-## 380                 London
-## 381                 London
-## 382                 London
-## 383                 London
-## 384                 London
-## 385          London race 2
-## 386          London race 2
-## 387          London race 2
-## 388          London race 2
-## 389          London race 2
-## 390          London race 2
-## 391          London race 2
-## 392          London race 2
-## 393          London race 2
-## 394          London race 2
-## 395          London race 2
-## 396          London race 2
-## 397          London race 2
-## 398          London race 2
-## 399          London race 2
-## 400          London race 2
-## 401          London race 2
-## 402          London race 2
-## 403              Hong Kong
-## 404              Hong Kong
-## 405              Hong Kong
-## 406              Hong Kong
-## 407              Hong Kong
-## 408              Hong Kong
-## 409              Hong Kong
-## 410              Hong Kong
-## 411              Hong Kong
-## 412              Hong Kong
-## 413              Hong Kong
-## 414              Hong Kong
-## 415              Hong Kong
-## 416              Hong Kong
-## 417              Hong Kong
-## 418              Hong Kong
-## 419              Hong Kong
-## 420              Hong Kong
-## 421              Hong Kong
-## 422              Hong Kong
-## 423              Marrakesh
-## 424              Marrakesh
-## 425              Marrakesh
-## 426              Marrakesh
-## 427              Marrakesh
-## 428              Marrakesh
-## 429              Marrakesh
-## 430              Marrakesh
-## 431              Marrakesh
-## 432              Marrakesh
-## 433              Marrakesh
-## 434              Marrakesh
-## 435              Marrakesh
-## 436              Marrakesh
-## 437              Marrakesh
-## 438              Marrakesh
-## 439              Marrakesh
-## 440              Marrakesh
-## 441              Marrakesh
-## 442              Marrakesh
-## 443           Buenos Aires
-## 444           Buenos Aires
-## 445           Buenos Aires
-## 446           Buenos Aires
-## 447           Buenos Aires
-## 448           Buenos Aires
-## 449           Buenos Aires
-## 450           Buenos Aires
-## 451           Buenos Aires
-## 452           Buenos Aires
-## 453           Buenos Aires
-## 454           Buenos Aires
-## 455           Buenos Aires
-## 456           Buenos Aires
-## 457           Buenos Aires
-## 458           Buenos Aires
-## 459           Buenos Aires
-## 460           Buenos Aires
-## 461           Buenos Aires
-## 462           Buenos Aires
-## 463            Mexico City
-## 464            Mexico City
-## 465            Mexico City
-## 466            Mexico City
-## 467            Mexico City
-## 468            Mexico City
-## 469            Mexico City
-## 470            Mexico City
-## 471            Mexico City
-## 472            Mexico City
-## 473            Mexico City
-## 474            Mexico City
-## 475            Mexico City
-## 476            Mexico City
-## 477            Mexico City
-## 478            Mexico City
-## 479            Mexico City
-## 480            Mexico City
-## 481            Mexico City
-## 482            Mexico City
-## 483                 Monaco
-## 484                 Monaco
-## 485                 Monaco
-## 486                 Monaco
-## 487                 Monaco
-## 488                 Monaco
-## 489                 Monaco
-## 490                 Monaco
-## 491                 Monaco
-## 492                 Monaco
-## 493                 Monaco
-## 494                 Monaco
-## 495                 Monaco
-## 496                 Monaco
-## 497                 Monaco
-## 498                 Monaco
-## 499                 Monaco
-## 500                 Monaco
-## 501                 Monaco
-## 502                 Monaco
-## 503                  Paris
-## 504                  Paris
-## 505                  Paris
-## 506                  Paris
-## 507                  Paris
-## 508                  Paris
-## 509                  Paris
-## 510                  Paris
-## 511                  Paris
-## 512                  Paris
-## 513                  Paris
-## 514                  Paris
-## 515                  Paris
-## 516                  Paris
-## 517                  Paris
-## 518                  Paris
-## 519                  Paris
-## 520                  Paris
-## 521                  Paris
-## 522                  Paris
-## 523                 Berlin
-## 524                 Berlin
-## 525                 Berlin
-## 526                 Berlin
-## 527                 Berlin
-## 528                 Berlin
-## 529                 Berlin
-## 530                 Berlin
-## 531                 Berlin
-## 532                 Berlin
-## 533                 Berlin
-## 534                 Berlin
-## 535                 Berlin
-## 536                 Berlin
-## 537                 Berlin
-## 538                 Berlin
-## 539                 Berlin
-## 540                 Berlin
-## 541                 Berlin
-## 542                 Berlin
-## 543          Berlin race 2
-## 544          Berlin race 2
-## 545          Berlin race 2
-## 546          Berlin race 2
-## 547          Berlin race 2
-## 548          Berlin race 2
-## 549          Berlin race 2
-## 550          Berlin race 2
-## 551          Berlin race 2
-## 552          Berlin race 2
-## 553          Berlin race 2
-## 554          Berlin race 2
-## 555          Berlin race 2
-## 556          Berlin race 2
-## 557          Berlin race 2
-## 558          Berlin race 2
-## 559          Berlin race 2
-## 560          Berlin race 2
-## 561          Berlin race 2
-## 562          Berlin race 2
-## 563          New York City
-## 564          New York City
-## 565          New York City
-## 566          New York City
-## 567          New York City
-## 568          New York City
-## 569          New York City
-## 570          New York City
-## 571          New York City
-## 572          New York City
-## 573          New York City
-## 574          New York City
-## 575          New York City
-## 576          New York City
-## 577          New York City
-## 578          New York City
-## 579          New York City
-## 580          New York City
-## 581          New York City
-## 582          New York City
-## 583   New York City race 2
-## 584   New York City race 2
-## 585   New York City race 2
-## 586   New York City race 2
-## 587   New York City race 2
-## 588   New York City race 2
-## 589   New York City race 2
-## 590   New York City race 2
-## 591   New York City race 2
-## 592   New York City race 2
-## 593   New York City race 2
-## 594   New York City race 2
-## 595   New York City race 2
-## 596   New York City race 2
-## 597   New York City race 2
-## 598   New York City race 2
-## 599   New York City race 2
-## 600   New York City race 2
-## 601   New York City race 2
-## 602   New York City race 2
-## 603               Montreal
-## 604               Montreal
-## 605               Montreal
-## 606               Montreal
-## 607               Montreal
-## 608               Montreal
-## 609               Montreal
-## 610               Montreal
-## 611               Montreal
-## 612               Montreal
-## 613               Montreal
-## 614               Montreal
-## 615               Montreal
-## 616               Montreal
-## 617               Montreal
-## 618               Montreal
-## 619               Montreal
-## 620               Montreal
-## 621               Montreal
-## 622               Montreal
-## 623        Montreal race 2
-## 624        Montreal race 2
-## 625        Montreal race 2
-## 626        Montreal race 2
-## 627        Montreal race 2
-## 628        Montreal race 2
-## 629        Montreal race 2
-## 630        Montreal race 2
-## 631        Montreal race 2
-## 632        Montreal race 2
-## 633        Montreal race 2
-## 634        Montreal race 2
-## 635        Montreal race 2
-## 636        Montreal race 2
-## 637        Montreal race 2
-## 638        Montreal race 2
-## 639        Montreal race 2
-## 640        Montreal race 2
-## 641        Montreal race 2
-## 642        Montreal race 2
-## 643              Hong Kong
-## 644              Hong Kong
-## 645              Hong Kong
-## 646              Hong Kong
-## 647              Hong Kong
-## 648              Hong Kong
-## 649              Hong Kong
-## 650              Hong Kong
-## 651              Hong Kong
-## 652              Hong Kong
-## 653              Hong Kong
-## 654              Hong Kong
-## 655              Hong Kong
-## 656              Hong Kong
-## 657              Hong Kong
-## 658              Hong Kong
-## 659              Hong Kong
-## 660              Hong Kong
-## 661              Hong Kong
-## 662              Hong Kong
-## 663       Hong Kong race 2
-## 664       Hong Kong race 2
-## 665       Hong Kong race 2
-## 666       Hong Kong race 2
-## 667       Hong Kong race 2
-## 668       Hong Kong race 2
-## 669       Hong Kong race 2
-## 670       Hong Kong race 2
-## 671       Hong Kong race 2
-## 672       Hong Kong race 2
-## 673       Hong Kong race 2
-## 674       Hong Kong race 2
-## 675       Hong Kong race 2
-## 676       Hong Kong race 2
-## 677       Hong Kong race 2
-## 678       Hong Kong race 2
-## 679       Hong Kong race 2
-## 680       Hong Kong race 2
-## 681       Hong Kong race 2
-## 682       Hong Kong race 2
-## 683              Marrakesh
-## 684              Marrakesh
-## 685              Marrakesh
-## 686              Marrakesh
-## 687              Marrakesh
-## 688              Marrakesh
-## 689              Marrakesh
-## 690              Marrakesh
-## 691              Marrakesh
-## 692              Marrakesh
-## 693              Marrakesh
-## 694              Marrakesh
-## 695              Marrakesh
-## 696              Marrakesh
-## 697              Marrakesh
-## 698              Marrakesh
-## 699              Marrakesh
-## 700              Marrakesh
-## 701              Marrakesh
-## 702              Marrakesh
-## 703               Santiago
-## 704               Santiago
-## 705               Santiago
-## 706               Santiago
-## 707               Santiago
-## 708               Santiago
-## 709               Santiago
-## 710               Santiago
-## 711               Santiago
-## 712               Santiago
-## 713               Santiago
-## 714               Santiago
-## 715               Santiago
-## 716               Santiago
-## 717               Santiago
-## 718               Santiago
-## 719               Santiago
-## 720               Santiago
-## 721               Santiago
-## 722               Santiago
-## 723            Mexico City
-## 724            Mexico City
-## 725            Mexico City
-## 726            Mexico City
-## 727            Mexico City
-## 728            Mexico City
-## 729            Mexico City
-## 730            Mexico City
-## 731            Mexico City
-## 732            Mexico City
-## 733            Mexico City
-## 734            Mexico City
-## 735            Mexico City
-## 736            Mexico City
-## 737            Mexico City
-## 738            Mexico City
-## 739            Mexico City
-## 740            Mexico City
-## 741            Mexico City
-## 742            Mexico City
-## 743         Punta del Este
-## 744         Punta del Este
-## 745         Punta del Este
-## 746         Punta del Este
-## 747         Punta del Este
-## 748         Punta del Este
-## 749         Punta del Este
-## 750         Punta del Este
-## 751         Punta del Este
-## 752         Punta del Este
-## 753         Punta del Este
-## 754         Punta del Este
-## 755         Punta del Este
-## 756         Punta del Este
-## 757         Punta del Este
-## 758         Punta del Este
-## 759         Punta del Este
-## 760         Punta del Este
-## 761         Punta del Este
-## 762         Punta del Este
-## 763                   Rome
-## 764                   Rome
-## 765                   Rome
-## 766                   Rome
-## 767                   Rome
-## 768                   Rome
-## 769                   Rome
-## 770                   Rome
-## 771                   Rome
-## 772                   Rome
-## 773                   Rome
-## 774                   Rome
-## 775                   Rome
-## 776                   Rome
-## 777                   Rome
-## 778                   Rome
-## 779                   Rome
-## 780                   Rome
-## 781                   Rome
-## 782                   Rome
-## 783                  Paris
-## 784                  Paris
-## 785                  Paris
-## 786                  Paris
-## 787                  Paris
-## 788                  Paris
-## 789                  Paris
-## 790                  Paris
-## 791                  Paris
-## 792                  Paris
-## 793                  Paris
-## 794                  Paris
-## 795                  Paris
-## 796                  Paris
-## 797                  Paris
-## 798                  Paris
-## 799                  Paris
-## 800                  Paris
-## 801                  Paris
-## 802                  Paris
-## 803                 Berlin
-## 804                 Berlin
-## 805                 Berlin
-## 806                 Berlin
-## 807                 Berlin
-## 808                 Berlin
-## 809                 Berlin
-## 810                 Berlin
-## 811                 Berlin
-## 812                 Berlin
-## 813                 Berlin
-## 814                 Berlin
-## 815                 Berlin
-## 816                 Berlin
-## 817                 Berlin
-## 818                 Berlin
-## 819                 Berlin
-## 820                 Berlin
-## 821                 Berlin
-## 822                 Berlin
-## 823                 Zürich
-## 824                 Zürich
-## 825                 Zürich
-## 826                 Zürich
-## 827                 Zürich
-## 828                 Zürich
-## 829                 Zürich
-## 830                 Zürich
-## 831                 Zürich
-## 832                 Zürich
-## 833                 Zürich
-## 834                 Zürich
-## 835                 Zürich
-## 836                 Zürich
-## 837                 Zürich
-## 838                 Zürich
-## 839                 Zürich
-## 840                 Zürich
-## 841                 Zürich
-## 842                 Zürich
-## 843          New York City
-## 844          New York City
-## 845          New York City
-## 846          New York City
-## 847          New York City
-## 848          New York City
-## 849          New York City
-## 850          New York City
-## 851          New York City
-## 852          New York City
-## 853          New York City
-## 854          New York City
-## 855          New York City
-## 856          New York City
-## 857          New York City
-## 858          New York City
-## 859          New York City
-## 860          New York City
-## 861          New York City
-## 862          New York City
-## 863   New York City race 2
-## 864   New York City race 2
-## 865   New York City race 2
-## 866   New York City race 2
-## 867   New York City race 2
-## 868   New York City race 2
-## 869   New York City race 2
-## 870   New York City race 2
-## 871   New York City race 2
-## 872   New York City race 2
-## 873   New York City race 2
-## 874   New York City race 2
-## 875   New York City race 2
-## 876   New York City race 2
-## 877   New York City race 2
-## 878   New York City race 2
-## 879   New York City race 2
-## 880   New York City race 2
-## 881   New York City race 2
-## 882   New York City race 2
-## 883             Ad Diriyah
-## 884             Ad Diriyah
-## 885             Ad Diriyah
-## 886             Ad Diriyah
-## 887             Ad Diriyah
-## 888             Ad Diriyah
-## 889             Ad Diriyah
-## 890             Ad Diriyah
-## 891             Ad Diriyah
-## 892             Ad Diriyah
-## 893             Ad Diriyah
-## 894             Ad Diriyah
-## 895             Ad Diriyah
-## 896             Ad Diriyah
-## 897             Ad Diriyah
-## 898             Ad Diriyah
-## 899             Ad Diriyah
-## 900             Ad Diriyah
-## 901             Ad Diriyah
-## 902             Ad Diriyah
-## 903             Ad Diriyah
-## 904             Ad Diriyah
-## 905              Marrakesh
-## 906              Marrakesh
-## 907              Marrakesh
-## 908              Marrakesh
-## 909              Marrakesh
-## 910              Marrakesh
-## 911              Marrakesh
-## 912              Marrakesh
-## 913              Marrakesh
-## 914              Marrakesh
-## 915              Marrakesh
-## 916              Marrakesh
-## 917              Marrakesh
-## 918              Marrakesh
-## 919              Marrakesh
-## 920              Marrakesh
-## 921              Marrakesh
-## 922              Marrakesh
-## 923              Marrakesh
-## 924              Marrakesh
-## 925              Marrakesh
-## 926              Marrakesh
-## 927               Santiago
-## 928               Santiago
-## 929               Santiago
-## 930               Santiago
-## 931               Santiago
-## 932               Santiago
-## 933               Santiago
-## 934               Santiago
-## 935               Santiago
-## 936               Santiago
-## 937               Santiago
-## 938               Santiago
-## 939               Santiago
-## 940               Santiago
-## 941               Santiago
-## 942               Santiago
-## 943               Santiago
-## 944               Santiago
-## 945               Santiago
-## 946               Santiago
-## 947               Santiago
-## 948               Santiago
-## 949            Mexico City
-## 950            Mexico City
-## 951            Mexico City
-## 952            Mexico City
-## 953            Mexico City
-## 954            Mexico City
-## 955            Mexico City
-## 956            Mexico City
-## 957            Mexico City
-## 958            Mexico City
-## 959            Mexico City
-## 960            Mexico City
-## 961            Mexico City
-## 962            Mexico City
-## 963            Mexico City
-## 964            Mexico City
-## 965            Mexico City
-## 966            Mexico City
-## 967            Mexico City
-## 968            Mexico City
-## 969            Mexico City
-## 970            Mexico City
-## 971              Hong Kong
-## 972              Hong Kong
-## 973              Hong Kong
-## 974              Hong Kong
-## 975              Hong Kong
-## 976              Hong Kong
-## 977              Hong Kong
-## 978              Hong Kong
-## 979              Hong Kong
-## 980              Hong Kong
-## 981              Hong Kong
-## 982              Hong Kong
-## 983              Hong Kong
-## 984              Hong Kong
-## 985              Hong Kong
-## 986              Hong Kong
-## 987              Hong Kong
-## 988              Hong Kong
-## 989              Hong Kong
-## 990              Hong Kong
-## 991              Hong Kong
-## 992              Hong Kong
-## 993                  Sanya
-## 994                  Sanya
-## 995                  Sanya
-## 996                  Sanya
-## 997                  Sanya
-## 998                  Sanya
-## 999                  Sanya
-## 1000                 Sanya
-## 1001                 Sanya
-## 1002                 Sanya
-## 1003                 Sanya
-## 1004                 Sanya
-## 1005                 Sanya
-## 1006                 Sanya
-## 1007                 Sanya
-## 1008                 Sanya
-## 1009                 Sanya
-## 1010                 Sanya
-## 1011                 Sanya
-## 1012                 Sanya
-## 1013                 Sanya
-## 1014                 Sanya
-## 1015                  Rome
-## 1016                  Rome
-## 1017                  Rome
-## 1018                  Rome
-## 1019                  Rome
-## 1020                  Rome
-## 1021                  Rome
-## 1022                  Rome
-## 1023                  Rome
-## 1024                  Rome
-## 1025                  Rome
-## 1026                  Rome
-## 1027                  Rome
-## 1028                  Rome
-## 1029                  Rome
-## 1030                  Rome
-## 1031                  Rome
-## 1032                  Rome
-## 1033                  Rome
-## 1034                  Rome
-## 1035                  Rome
-## 1036                  Rome
-## 1037                 Paris
-## 1038                 Paris
-## 1039                 Paris
-## 1040                 Paris
-## 1041                 Paris
-## 1042                 Paris
-## 1043                 Paris
-## 1044                 Paris
-## 1045                 Paris
-## 1046                 Paris
-## 1047                 Paris
-## 1048                 Paris
-## 1049                 Paris
-## 1050                 Paris
-## 1051                 Paris
-## 1052                 Paris
-## 1053                 Paris
-## 1054                 Paris
-## 1055                 Paris
-## 1056                 Paris
-## 1057                 Paris
-## 1058                 Paris
-## 1059                Monaco
-## 1060                Monaco
-## 1061                Monaco
-## 1062                Monaco
-## 1063                Monaco
-## 1064                Monaco
-## 1065                Monaco
-## 1066                Monaco
-## 1067                Monaco
-## 1068                Monaco
-## 1069                Monaco
-## 1070                Monaco
-## 1071                Monaco
-## 1072                Monaco
-## 1073                Monaco
-## 1074                Monaco
-## 1075                Monaco
-## 1076                Monaco
-## 1077                Monaco
-## 1078                Monaco
-## 1079                Monaco
-## 1080                Monaco
-## 1081                Berlin
-## 1082                Berlin
-## 1083                Berlin
-## 1084                Berlin
-## 1085                Berlin
-## 1086                Berlin
-## 1087                Berlin
-## 1088                Berlin
-## 1089                Berlin
-## 1090                Berlin
-## 1091                Berlin
-## 1092                Berlin
-## 1093                Berlin
-## 1094                Berlin
-## 1095                Berlin
-## 1096                Berlin
-## 1097                Berlin
-## 1098                Berlin
-## 1099                Berlin
-## 1100                Berlin
-## 1101                Berlin
-## 1102                Berlin
-## 1103                 Swiss
-## 1104                 Swiss
-## 1105                 Swiss
-## 1106                 Swiss
-## 1107                 Swiss
-## 1108                 Swiss
-## 1109                 Swiss
-## 1110                 Swiss
-## 1111                 Swiss
-## 1112                 Swiss
-## 1113                 Swiss
-## 1114                 Swiss
-## 1115                 Swiss
-## 1116                 Swiss
-## 1117                 Swiss
-## 1118                 Swiss
-## 1119                 Swiss
-## 1120                 Swiss
-## 1121                 Swiss
-## 1122                 Swiss
-## 1123                 Swiss
-## 1124                 Swiss
-## 1125         New York City
-## 1126         New York City
-## 1127         New York City
-## 1128         New York City
-## 1129         New York City
-## 1130         New York City
-## 1131         New York City
-## 1132         New York City
-## 1133         New York City
-## 1134         New York City
-## 1135         New York City
-## 1136         New York City
-## 1137         New York City
-## 1138         New York City
-## 1139         New York City
-## 1140         New York City
-## 1141         New York City
-## 1142         New York City
-## 1143         New York City
-## 1144         New York City
-## 1145         New York City
-## 1146         New York City
-## 1147  New York City race 2
-## 1148  New York City race 2
-## 1149  New York City race 2
-## 1150  New York City race 2
-## 1151  New York City race 2
-## 1152  New York City race 2
-## 1153  New York City race 2
-## 1154  New York City race 2
-## 1155  New York City race 2
-## 1156  New York City race 2
-## 1157  New York City race 2
-## 1158  New York City race 2
-## 1159  New York City race 2
-## 1160  New York City race 2
-## 1161  New York City race 2
-## 1162  New York City race 2
-## 1163  New York City race 2
-## 1164  New York City race 2
-## 1165  New York City race 2
-## 1166  New York City race 2
-## 1167  New York City race 2
-## 1168  New York City race 2
-## 1169               Diriyah
-## 1170               Diriyah
-## 1171               Diriyah
-## 1172               Diriyah
-## 1173               Diriyah
-## 1174               Diriyah
-## 1175               Diriyah
-## 1176               Diriyah
-## 1177               Diriyah
-## 1178               Diriyah
-## 1179               Diriyah
-## 1180               Diriyah
-## 1181               Diriyah
-## 1182               Diriyah
-## 1183               Diriyah
-## 1184               Diriyah
-## 1185               Diriyah
-## 1186               Diriyah
-## 1187               Diriyah
-## 1188               Diriyah
-## 1189               Diriyah
-## 1190               Diriyah
-## 1191               Diriyah
-## 1192               Diriyah
-## 1193        Diriyah race 2
-## 1194        Diriyah race 2
-## 1195        Diriyah race 2
-## 1196        Diriyah race 2
-## 1197        Diriyah race 2
-## 1198        Diriyah race 2
-## 1199        Diriyah race 2
-## 1200        Diriyah race 2
-## 1201        Diriyah race 2
-## 1202        Diriyah race 2
-## 1203        Diriyah race 2
-## 1204        Diriyah race 2
-## 1205        Diriyah race 2
-## 1206        Diriyah race 2
-## 1207        Diriyah race 2
-## 1208        Diriyah race 2
-## 1209        Diriyah race 2
-## 1210        Diriyah race 2
-## 1211        Diriyah race 2
-## 1212        Diriyah race 2
-## 1213        Diriyah race 2
-## 1214        Diriyah race 2
-## 1215        Diriyah race 2
-## 1216        Diriyah race 2
-## 1217              Santiago
-## 1218              Santiago
-## 1219              Santiago
-## 1220              Santiago
-## 1221              Santiago
-## 1222              Santiago
-## 1223              Santiago
-## 1224              Santiago
-## 1225              Santiago
-## 1226              Santiago
-## 1227              Santiago
-## 1228              Santiago
-## 1229              Santiago
-## 1230              Santiago
-## 1231              Santiago
-## 1232              Santiago
-## 1233              Santiago
-## 1234              Santiago
-## 1235              Santiago
-## 1236              Santiago
-## 1237              Santiago
-## 1238              Santiago
-## 1239              Santiago
-## 1240              Santiago
-## 1241           Mexico City
-## 1242           Mexico City
-## 1243           Mexico City
-## 1244           Mexico City
-## 1245           Mexico City
-## 1246           Mexico City
-## 1247           Mexico City
-## 1248           Mexico City
-## 1249           Mexico City
-## 1250           Mexico City
-## 1251           Mexico City
-## 1252           Mexico City
-## 1253           Mexico City
-## 1254           Mexico City
-## 1255           Mexico City
-## 1256           Mexico City
-## 1257           Mexico City
-## 1258           Mexico City
-## 1259           Mexico City
-## 1260           Mexico City
-## 1261           Mexico City
-## 1262           Mexico City
-## 1263           Mexico City
-## 1264           Mexico City
-## 1265             Marrakesh
-## 1266             Marrakesh
-## 1267             Marrakesh
-## 1268             Marrakesh
-## 1269             Marrakesh
-## 1270             Marrakesh
-## 1271             Marrakesh
-## 1272             Marrakesh
-## 1273             Marrakesh
-## 1274             Marrakesh
-## 1275             Marrakesh
-## 1276             Marrakesh
-## 1277             Marrakesh
-## 1278             Marrakesh
-## 1279             Marrakesh
-## 1280             Marrakesh
-## 1281             Marrakesh
-## 1282             Marrakesh
-## 1283             Marrakesh
-## 1284             Marrakesh
-## 1285             Marrakesh
-## 1286             Marrakesh
-## 1287             Marrakesh
-## 1288             Marrakesh
-## 1289                Berlin
-## 1290                Berlin
-## 1291                Berlin
-## 1292                Berlin
-## 1293                Berlin
-## 1294                Berlin
-## 1295                Berlin
-## 1296                Berlin
-## 1297                Berlin
-## 1298                Berlin
-## 1299                Berlin
-## 1300                Berlin
-## 1301                Berlin
-## 1302                Berlin
-## 1303                Berlin
-## 1304                Berlin
-## 1305                Berlin
-## 1306                Berlin
-## 1307                Berlin
-## 1308                Berlin
-## 1309                Berlin
-## 1310                Berlin
-## 1311                Berlin
-## 1312                Berlin
-## 1313         Berlin race 2
-## 1314         Berlin race 2
-## 1315         Berlin race 2
-## 1316         Berlin race 2
-## 1317         Berlin race 2
-## 1318         Berlin race 2
-## 1319         Berlin race 2
-## 1320         Berlin race 2
-## 1321         Berlin race 2
-## 1322         Berlin race 2
-## 1323         Berlin race 2
-## 1324         Berlin race 2
-## 1325         Berlin race 2
-## 1326         Berlin race 2
-## 1327         Berlin race 2
-## 1328         Berlin race 2
-## 1329         Berlin race 2
-## 1330         Berlin race 2
-## 1331         Berlin race 2
-## 1332         Berlin race 2
-## 1333         Berlin race 2
-## 1334         Berlin race 2
-## 1335         Berlin race 2
-## 1336         Berlin race 2
-## 1337         Berlin race 3
-## 1338         Berlin race 3
-## 1339         Berlin race 3
-## 1340         Berlin race 3
-## 1341         Berlin race 3
-## 1342         Berlin race 3
-## 1343         Berlin race 3
-## 1344         Berlin race 3
-## 1345         Berlin race 3
-## 1346         Berlin race 3
-## 1347         Berlin race 3
-## 1348         Berlin race 3
-## 1349         Berlin race 3
-## 1350         Berlin race 3
-## 1351         Berlin race 3
-## 1352         Berlin race 3
-## 1353         Berlin race 3
-## 1354         Berlin race 3
-## 1355         Berlin race 3
-## 1356         Berlin race 3
-## 1357         Berlin race 3
-## 1358         Berlin race 3
-## 1359         Berlin race 3
-## 1360         Berlin race 3
-## 1361         Berlin race 4
-## 1362         Berlin race 4
-## 1363         Berlin race 4
-## 1364         Berlin race 4
-## 1365         Berlin race 4
-## 1366         Berlin race 4
-## 1367         Berlin race 4
-## 1368         Berlin race 4
-## 1369         Berlin race 4
-## 1370         Berlin race 4
-## 1371         Berlin race 4
-## 1372         Berlin race 4
-## 1373         Berlin race 4
-## 1374         Berlin race 4
-## 1375         Berlin race 4
-## 1376         Berlin race 4
-## 1377         Berlin race 4
-## 1378         Berlin race 4
-## 1379         Berlin race 4
-## 1380         Berlin race 4
-## 1381         Berlin race 4
-## 1382         Berlin race 4
-## 1383         Berlin race 4
-## 1384         Berlin race 4
-## 1385         Berlin race 5
-## 1386         Berlin race 5
-## 1387         Berlin race 5
-## 1388         Berlin race 5
-## 1389         Berlin race 5
-## 1390         Berlin race 5
-## 1391         Berlin race 5
-## 1392         Berlin race 5
-## 1393         Berlin race 5
-## 1394         Berlin race 5
-## 1395         Berlin race 5
-## 1396         Berlin race 5
-## 1397         Berlin race 5
-## 1398         Berlin race 5
-## 1399         Berlin race 5
-## 1400         Berlin race 5
-## 1401         Berlin race 5
-## 1402         Berlin race 5
-## 1403         Berlin race 5
-## 1404         Berlin race 5
-## 1405         Berlin race 5
-## 1406         Berlin race 5
-## 1407         Berlin race 5
-## 1408         Berlin race 5
-## 1409         Berlin race 6
-## 1410         Berlin race 6
-## 1411         Berlin race 6
-## 1412         Berlin race 6
-## 1413         Berlin race 6
-## 1414         Berlin race 6
-## 1415         Berlin race 6
-## 1416         Berlin race 6
-## 1417         Berlin race 6
-## 1418         Berlin race 6
-## 1419         Berlin race 6
-## 1420         Berlin race 6
-## 1421         Berlin race 6
-## 1422         Berlin race 6
-## 1423         Berlin race 6
-## 1424         Berlin race 6
-## 1425         Berlin race 6
-## 1426         Berlin race 6
-## 1427         Berlin race 6
-## 1428         Berlin race 6
-## 1429         Berlin race 6
-## 1430         Berlin race 6
-## 1431         Berlin race 6
-## 1432         Berlin race 6
-## 1433               Diriyah
-## 1434               Diriyah
-## 1435               Diriyah
-## 1436               Diriyah
-## 1437               Diriyah
-## 1438               Diriyah
-## 1439               Diriyah
-## 1440               Diriyah
-## 1441               Diriyah
-## 1442               Diriyah
-## 1443               Diriyah
-## 1444               Diriyah
-## 1445               Diriyah
-## 1446               Diriyah
-## 1447               Diriyah
-## 1448               Diriyah
-## 1449               Diriyah
-## 1450               Diriyah
-## 1451               Diriyah
-## 1452               Diriyah
-## 1453               Diriyah
-## 1454               Diriyah
-## 1455               Diriyah
-## 1456               Diriyah
-## 1457        Diriyah race 2
-## 1458        Diriyah race 2
-## 1459        Diriyah race 2
-## 1460        Diriyah race 2
-## 1461        Diriyah race 2
-## 1462        Diriyah race 2
-## 1463        Diriyah race 2
-## 1464        Diriyah race 2
-## 1465        Diriyah race 2
-## 1466        Diriyah race 2
-## 1467        Diriyah race 2
-## 1468        Diriyah race 2
-## 1469        Diriyah race 2
-## 1470        Diriyah race 2
-## 1471        Diriyah race 2
-## 1472        Diriyah race 2
-## 1473        Diriyah race 2
-## 1474        Diriyah race 2
-## 1475        Diriyah race 2
-## 1476        Diriyah race 2
-## 1477        Diriyah race 2
-## 1478        Diriyah race 2
-## 1479        Diriyah race 2
-## 1480        Diriyah race 2</code></pre>
-<pre class="r"><code>filter(formula_e, rank==1) %&gt;% select(., season, race_city, time_retired) %&gt;% arrange(season) </code></pre>
-<pre><code>##    season             race_city time_retired
-## 1       1          Buenos Aires    48:52.100
-## 2       1               Beijing    52:23.413
-## 3       1            Long Beach    46:01.971
-## 4       1                Berlin    48:26.566
-## 5       1                Moscow    43:18.867
-## 6       1             Putrajaya    51:11.979
-## 7       1         London race 2    45:48.792
-## 8       1        Punta del Este    49:08.990
-## 9       1                 Miami    46:12.349
-## 10      1                Monaco    48:05.225
-## 11      1                London    47:54.784
-## 12      2             Putrajaya    50:17.449
-## 13      2            Long Beach    45:11.582
-## 14      2                 Paris    52:40.324
-## 15      2          Buenos Aires    45:28.385
-## 16      2           Mexico City    48:28.409
-## 17      2               Beijing    50:08.835
-## 18      2        Punta del Este    45:59.697
-## 19      2                London    53:56.683
-## 20      2         London race 2    56:32.649
-## 21      2                Berlin    53:46.086
-## 22      3           Mexico City    56&#39;27.535
-## 23      3              Montreal    56:55.592
-## 24      3                Berlin    53:19.661
-## 25      3       Montreal race 2    54:12.606
-## 26      3         New York City    52:29.275
-## 27      3  New York City race 2    58:09.388
-## 28      3             Marrakesh             
-## 29      3                Monaco    51:05.488
-## 30      3                 Paris    59:41.125
-## 31      3         Berlin race 2    56:02.155
-## 32      3             Hong Kong    53:13.298
-## 33      3          Buenos Aires    45:45.623
-## 34      4           Mexico City    50:45.164
-## 35      4                Berlin    55:35.546
-## 36      4                Zürich    51:19.811
-## 37      4         New York City  1:02:30.054
-## 38      4      Hong Kong race 2    50:05.084
-## 39      4             Marrakesh    48:04.751
-## 40      4              Santiago  1:01:24.514
-## 41      4        Punta del Este    50:43.809
-## 42      4                 Paris    54:49.102
-## 43      4  New York City race 2  1:01:38.089
-## 44      4             Hong Kong  1:17:10.486
-## 45      4                  Rome    58:20.656
-## 46      5            Ad Diriyah    46:29.377
-## 47      5           Mexico City  1:13:15.422
-## 48      5                Berlin    47:02.477
-## 49      5                  Rome  1:33:51.140
-## 50      5             Marrakesh    46:45.884
-## 51      5                 Sanya  1:02:50.185
-## 52      5                Monaco    46:05.547
-## 53      5                 Swiss  1:25:26.873
-## 54      5             Hong Kong    59:36.119
-## 55      5              Santiago    47:02:511
-## 56      5                 Paris    47:50.510
-## 57      5  New York City race 2    47:22.289
-## 58      5         New York City    46:16.399
-## 59      6        Diriyah race 2    46:48.327
-## 60      6              Santiago    46:11.511
-## 61      6         Berlin race 3    46:15.512
-## 62      6           Mexico City    46:42.093
-## 63      6         Berlin race 6    47:22.107
-## 64      6             Marrakesh    46:52.757
-## 65      6                Berlin    47:08.261
-## 66      6         Berlin race 2    46:19.412
-## 67      6         Berlin race 4    46:24.803
-## 68      6               Diriyah    46:17.371
-## 69      6         Berlin race 5    47:28.880
-## 70      7        Diriyah race 2    39:50.836
-## 71      7               Diriyah    46:44.765</code></pre>
+##                 race_city
+## 1                 Beijing
+## 2                 Beijing
+## 3                 Beijing
+## 4                 Beijing
+## 5                 Beijing
+## 6                 Beijing
+## 7                 Beijing
+## 8                 Beijing
+## 9                 Beijing
+## 10                Beijing
+## 11                Beijing
+## 12                Beijing
+## 13                Beijing
+## 14                Beijing
+## 15                Beijing
+## 16                Beijing
+## 17                Beijing
+## 18                Beijing
+## 19                Beijing
+## 20                Beijing
+## 21              Putrajaya
+## 22              Putrajaya
+## 23              Putrajaya
+## 24              Putrajaya
+## 25              Putrajaya
+## 26              Putrajaya
+## 27              Putrajaya
+## 28              Putrajaya
+## 29              Putrajaya
+## 30              Putrajaya
+## 31              Putrajaya
+## 32              Putrajaya
+## 33              Putrajaya
+## 34              Putrajaya
+## 35              Putrajaya
+## 36              Putrajaya
+## 37              Putrajaya
+## 38              Putrajaya
+## 39              Putrajaya
+## 40              Putrajaya
+## 41         Punta del Este
+## 42         Punta del Este
+## 43         Punta del Este
+## 44         Punta del Este
+## 45         Punta del Este
+## 46         Punta del Este
+## 47         Punta del Este
+## 48         Punta del Este
+## 49         Punta del Este
+## 50         Punta del Este
+## 51         Punta del Este
+## 52         Punta del Este
+## 53         Punta del Este
+## 54         Punta del Este
+## 55         Punta del Este
+## 56         Punta del Este
+## 57         Punta del Este
+## 58         Punta del Este
+## 59         Punta del Este
+## 60         Punta del Este
+## 61           Buenos Aires
+## 62           Buenos Aires
+## 63           Buenos Aires
+## 64           Buenos Aires
+## 65           Buenos Aires
+## 66           Buenos Aires
+## 67           Buenos Aires
+## 68           Buenos Aires
+## 69           Buenos Aires
+## 70           Buenos Aires
+## 71           Buenos Aires
+## 72           Buenos Aires
+## 73           Buenos Aires
+## 74           Buenos Aires
+## 75           Buenos Aires
+## 76           Buenos Aires
+## 77           Buenos Aires
+## 78           Buenos Aires
+## 79           Buenos Aires
+## 80           Buenos Aires
+## 81                  Miami
+## 82                  Miami
+## 83                  Miami
+## 84                  Miami
+## 85                  Miami
+## 86                  Miami
+## 87                  Miami
+## 88                  Miami
+## 89                  Miami
+## 90                  Miami
+## 91                  Miami
+## 92                  Miami
+## 93                  Miami
+## 94                  Miami
+## 95                  Miami
+## 96                  Miami
+## 97                  Miami
+## 98                  Miami
+## 99                  Miami
+## 100                 Miami
+## 101            Long Beach
+## 102            Long Beach
+## 103            Long Beach
+## 104            Long Beach
+## 105            Long Beach
+## 106            Long Beach
+## 107            Long Beach
+## 108            Long Beach
+## 109            Long Beach
+## 110            Long Beach
+## 111            Long Beach
+## 112            Long Beach
+## 113            Long Beach
+## 114            Long Beach
+## 115            Long Beach
+## 116            Long Beach
+## 117            Long Beach
+## 118            Long Beach
+## 119            Long Beach
+## 120            Long Beach
+## 121                Monaco
+## 122                Monaco
+## 123                Monaco
+## 124                Monaco
+## 125                Monaco
+## 126                Monaco
+## 127                Monaco
+## 128                Monaco
+## 129                Monaco
+## 130                Monaco
+## 131                Monaco
+## 132                Monaco
+## 133                Monaco
+## 134                Monaco
+## 135                Monaco
+## 136                Monaco
+## 137                Monaco
+## 138                Monaco
+## 139                Monaco
+## 140                Monaco
+## 141                Berlin
+## 142                Berlin
+## 143                Berlin
+## 144                Berlin
+## 145                Berlin
+## 146                Berlin
+## 147                Berlin
+## 148                Berlin
+## 149                Berlin
+## 150                Berlin
+## 151                Berlin
+## 152                Berlin
+## 153                Berlin
+## 154                Berlin
+## 155                Berlin
+## 156                Berlin
+## 157                Berlin
+## 158                Berlin
+## 159                Berlin
+## 160                Berlin
+## 161                Moscow
+## 162                Moscow
+## 163                Moscow
+## 164                Moscow
+## 165                Moscow
+## 166                Moscow
+## 167                Moscow
+## 168                Moscow
+## 169                Moscow
+## 170                Moscow
+## 171                Moscow
+## 172                Moscow
+## 173                Moscow
+## 174                Moscow
+## 175                Moscow
+## 176                Moscow
+## 177                Moscow
+## 178                Moscow
+## 179                Moscow
+## 180                Moscow
+## 181                London
+## 182                London
+## 183                London
+## 184                London
+## 185                London
+## 186                London
+## 187                London
+## 188                London
+## 189                London
+## 190                London
+## 191                London
+## 192                London
+## 193                London
+## 194                London
+## 195                London
+## 196                London
+## 197                London
+## 198                London
+## 199                London
+## 200                London
+## 201         London race 2
+## 202         London race 2
+## 203         London race 2
+## 204         London race 2
+## 205         London race 2
+## 206         London race 2
+## 207         London race 2
+## 208         London race 2
+## 209         London race 2
+## 210         London race 2
+## 211         London race 2
+## 212         London race 2
+## 213         London race 2
+## 214         London race 2
+## 215         London race 2
+## 216         London race 2
+## 217         London race 2
+## 218         London race 2
+## 219         London race 2
+## 220         London race 2
+## 221               Beijing
+## 222               Beijing
+## 223               Beijing
+## 224               Beijing
+## 225               Beijing
+## 226               Beijing
+## 227               Beijing
+## 228               Beijing
+## 229               Beijing
+## 230               Beijing
+## 231               Beijing
+## 232               Beijing
+## 233               Beijing
+## 234               Beijing
+## 235               Beijing
+## 236               Beijing
+## 237               Beijing
+## 238               Beijing
+## 239               Beijing
+## 240               Beijing
+## 241             Putrajaya
+## 242             Putrajaya
+## 243             Putrajaya
+## 244             Putrajaya
+## 245             Putrajaya
+## 246             Putrajaya
+## 247             Putrajaya
+## 248             Putrajaya
+## 249             Putrajaya
+## 250             Putrajaya
+## 251             Putrajaya
+## 252             Putrajaya
+## 253             Putrajaya
+## 254             Putrajaya
+## 255             Putrajaya
+## 256             Putrajaya
+## 257             Putrajaya
+## 258             Putrajaya
+## 259        Punta del Este
+## 260        Punta del Este
+## 261        Punta del Este
+## 262        Punta del Este
+## 263        Punta del Este
+## 264        Punta del Este
+## 265        Punta del Este
+## 266        Punta del Este
+## 267        Punta del Este
+## 268        Punta del Este
+## 269        Punta del Este
+## 270        Punta del Este
+## 271        Punta del Este
+## 272        Punta del Este
+## 273        Punta del Este
+## 274        Punta del Este
+## 275        Punta del Este
+## 276        Punta del Este
+## 277          Buenos Aires
+## 278          Buenos Aires
+## 279          Buenos Aires
+## 280          Buenos Aires
+## 281          Buenos Aires
+## 282          Buenos Aires
+## 283          Buenos Aires
+## 284          Buenos Aires
+## 285          Buenos Aires
+## 286          Buenos Aires
+## 287          Buenos Aires
+## 288          Buenos Aires
+## 289          Buenos Aires
+## 290          Buenos Aires
+## 291          Buenos Aires
+## 292          Buenos Aires
+## 293          Buenos Aires
+## 294          Buenos Aires
+## 295           Mexico City
+## 296           Mexico City
+## 297           Mexico City
+## 298           Mexico City
+## 299           Mexico City
+## 300           Mexico City
+## 301           Mexico City
+## 302           Mexico City
+## 303           Mexico City
+## 304           Mexico City
+## 305           Mexico City
+## 306           Mexico City
+## 307           Mexico City
+## 308           Mexico City
+## 309           Mexico City
+## 310           Mexico City
+## 311           Mexico City
+## 312           Mexico City
+## 313            Long Beach
+## 314            Long Beach
+## 315            Long Beach
+## 316            Long Beach
+## 317            Long Beach
+## 318            Long Beach
+## 319            Long Beach
+## 320            Long Beach
+## 321            Long Beach
+## 322            Long Beach
+## 323            Long Beach
+## 324            Long Beach
+## 325            Long Beach
+## 326            Long Beach
+## 327            Long Beach
+## 328            Long Beach
+## 329            Long Beach
+## 330            Long Beach
+## 331                 Paris
+## 332                 Paris
+## 333                 Paris
+## 334                 Paris
+## 335                 Paris
+## 336                 Paris
+## 337                 Paris
+## 338                 Paris
+## 339                 Paris
+## 340                 Paris
+## 341                 Paris
+## 342                 Paris
+## 343                 Paris
+## 344                 Paris
+## 345                 Paris
+## 346                 Paris
+## 347                 Paris
+## 348                 Paris
+## 349                Berlin
+## 350                Berlin
+## 351                Berlin
+## 352                Berlin
+## 353                Berlin
+## 354                Berlin
+## 355                Berlin
+## 356                Berlin
+## 357                Berlin
+## 358                Berlin
+## 359                Berlin
+## 360                Berlin
+## 361                Berlin
+## 362                Berlin
+## 363                Berlin
+## 364                Berlin
+## 365                Berlin
+## 366                Berlin
+## 367                London
+## 368                London
+## 369                London
+## 370                London
+## 371                London
+## 372                London
+## 373                London
+## 374                London
+## 375                London
+## 376                London
+## 377                London
+## 378                London
+## 379                London
+## 380                London
+## 381                London
+## 382                London
+## 383                London
+## 384                London
+## 385         London race 2
+## 386         London race 2
+## 387         London race 2
+## 388         London race 2
+## 389         London race 2
+## 390         London race 2
+## 391         London race 2
+## 392         London race 2
+## 393         London race 2
+## 394         London race 2
+## 395         London race 2
+## 396         London race 2
+## 397         London race 2
+## 398         London race 2
+## 399         London race 2
+## 400         London race 2
+## 401         London race 2
+## 402         London race 2
+## 403             Hong Kong
+## 404             Hong Kong
+## 405             Hong Kong
+## 406             Hong Kong
+## 407             Hong Kong
+## 408             Hong Kong
+## 409             Hong Kong
+## 410             Hong Kong
+## 411             Hong Kong
+## 412             Hong Kong
+## 413             Hong Kong
+## 414             Hong Kong
+## 415             Hong Kong
+## 416             Hong Kong
+## 417             Hong Kong
+## 418             Hong Kong
+## 419             Hong Kong
+## 420             Hong Kong
+## 421             Hong Kong
+## 422             Hong Kong
+## 423             Marrakesh
+## 424             Marrakesh
+## 425             Marrakesh
+## 426             Marrakesh
+## 427             Marrakesh
+## 428             Marrakesh
+## 429             Marrakesh
+## 430             Marrakesh
+## 431             Marrakesh
+## 432             Marrakesh
+## 433             Marrakesh
+## 434             Marrakesh
+## 435             Marrakesh
+## 436             Marrakesh
+## 437             Marrakesh
+## 438             Marrakesh
+## 439             Marrakesh
+## 440             Marrakesh
+## 441             Marrakesh
+## 442             Marrakesh
+## 443          Buenos Aires
+## 444          Buenos Aires
+## 445          Buenos Aires
+## 446          Buenos Aires
+## 447          Buenos Aires
+## 448          Buenos Aires
+## 449          Buenos Aires
+## 450          Buenos Aires
+## 451          Buenos Aires
+## 452          Buenos Aires
+## 453          Buenos Aires
+## 454          Buenos Aires
+## 455          Buenos Aires
+## 456          Buenos Aires
+## 457          Buenos Aires
+## 458          Buenos Aires
+## 459          Buenos Aires
+## 460          Buenos Aires
+## 461          Buenos Aires
+## 462          Buenos Aires
+## 463           Mexico City
+## 464           Mexico City
+## 465           Mexico City
+## 466           Mexico City
+## 467           Mexico City
+## 468           Mexico City
+## 469           Mexico City
+## 470           Mexico City
+## 471           Mexico City
+## 472           Mexico City
+## 473           Mexico City
+## 474           Mexico City
+## 475           Mexico City
+## 476           Mexico City
+## 477           Mexico City
+## 478           Mexico City
+## 479           Mexico City
+## 480           Mexico City
+## 481           Mexico City
+## 482           Mexico City
+## 483                Monaco
+## 484                Monaco
+## 485                Monaco
+## 486                Monaco
+## 487                Monaco
+## 488                Monaco
+## 489                Monaco
+## 490                Monaco
+## 491                Monaco
+## 492                Monaco
+## 493                Monaco
+## 494                Monaco
+## 495                Monaco
+## 496                Monaco
+## 497                Monaco
+## 498                Monaco
+## 499                Monaco
+## 500                Monaco
+## 501                Monaco
+## 502                Monaco
+## 503                 Paris
+## 504                 Paris
+## 505                 Paris
+## 506                 Paris
+## 507                 Paris
+## 508                 Paris
+## 509                 Paris
+## 510                 Paris
+## 511                 Paris
+## 512                 Paris
+## 513                 Paris
+## 514                 Paris
+## 515                 Paris
+## 516                 Paris
+## 517                 Paris
+## 518                 Paris
+## 519                 Paris
+## 520                 Paris
+## 521                 Paris
+## 522                 Paris
+## 523                Berlin
+## 524                Berlin
+## 525                Berlin
+## 526                Berlin
+## 527                Berlin
+## 528                Berlin
+## 529                Berlin
+## 530                Berlin
+## 531                Berlin
+## 532                Berlin
+## 533                Berlin
+## 534                Berlin
+## 535                Berlin
+## 536                Berlin
+## 537                Berlin
+## 538                Berlin
+## 539                Berlin
+## 540                Berlin
+## 541                Berlin
+## 542                Berlin
+## 543         Berlin race 2
+## 544         Berlin race 2
+## 545         Berlin race 2
+## 546         Berlin race 2
+## 547         Berlin race 2
+## 548         Berlin race 2
+## 549         Berlin race 2
+## 550         Berlin race 2
+## 551         Berlin race 2
+## 552         Berlin race 2
+## 553         Berlin race 2
+## 554         Berlin race 2
+## 555         Berlin race 2
+## 556         Berlin race 2
+## 557         Berlin race 2
+## 558         Berlin race 2
+## 559         Berlin race 2
+## 560         Berlin race 2
+## 561         Berlin race 2
+## 562         Berlin race 2
+## 563         New York City
+## 564         New York City
+## 565         New York City
+## 566         New York City
+## 567         New York City
+## 568         New York City
+## 569         New York City
+## 570         New York City
+## 571         New York City
+## 572         New York City
+## 573         New York City
+## 574         New York City
+## 575         New York City
+## 576         New York City
+## 577         New York City
+## 578         New York City
+## 579         New York City
+## 580         New York City
+## 581         New York City
+## 582         New York City
+## 583  New York City race 2
+## 584  New York City race 2
+## 585  New York City race 2
+## 586  New York City race 2
+## 587  New York City race 2
+## 588  New York City race 2
+## 589  New York City race 2
+## 590  New York City race 2
+## 591  New York City race 2
+## 592  New York City race 2
+## 593  New York City race 2
+## 594  New York City race 2
+## 595  New York City race 2
+## 596  New York City race 2
+## 597  New York City race 2
+## 598  New York City race 2
+## 599  New York City race 2
+## 600  New York City race 2
+## 601  New York City race 2
+## 602  New York City race 2
+## 603              Montreal
+## 604              Montreal
+## 605              Montreal
+## 606              Montreal
+## 607              Montreal
+## 608              Montreal
+## 609              Montreal
+## 610              Montreal
+## 611              Montreal
+## 612              Montreal
+## 613              Montreal
+## 614              Montreal
+## 615              Montreal
+## 616              Montreal
+## 617              Montreal
+## 618              Montreal
+## 619              Montreal
+## 620              Montreal
+## 621              Montreal
+## 622              Montreal
+## 623       Montreal race 2
+## 624       Montreal race 2
+## 625       Montreal race 2
+## 626       Montreal race 2
+## 627       Montreal race 2
+## 628       Montreal race 2
+## 629       Montreal race 2
+## 630       Montreal race 2
+## 631       Montreal race 2
+## 632       Montreal race 2
+## 633       Montreal race 2
+## 634       Montreal race 2
+## 635       Montreal race 2
+## 636       Montreal race 2
+## 637       Montreal race 2
+## 638       Montreal race 2
+## 639       Montreal race 2
+## 640       Montreal race 2
+## 641       Montreal race 2
+## 642       Montreal race 2
+## 643             Hong Kong
+## 644             Hong Kong
+## 645             Hong Kong
+## 646             Hong Kong
+## 647             Hong Kong
+## 648             Hong Kong
+## 649             Hong Kong
+## 650             Hong Kong
+## 651             Hong Kong
+## 652             Hong Kong
+## 653             Hong Kong
+## 654             Hong Kong
+## 655             Hong Kong
+## 656             Hong Kong
+## 657             Hong Kong
+## 658             Hong Kong
+## 659             Hong Kong
+## 660             Hong Kong
+## 661             Hong Kong
+## 662             Hong Kong
+## 663      Hong Kong race 2
+## 664      Hong Kong race 2
+## 665      Hong Kong race 2
+## 666      Hong Kong race 2
+## 667      Hong Kong race 2
+## 668      Hong Kong race 2
+## 669      Hong Kong race 2
+## 670      Hong Kong race 2
+## 671      Hong Kong race 2
+## 672      Hong Kong race 2
+## 673      Hong Kong race 2
+## 674      Hong Kong race 2
+## 675      Hong Kong race 2
+## 676      Hong Kong race 2
+## 677      Hong Kong race 2
+## 678      Hong Kong race 2
+## 679      Hong Kong race 2
+## 680      Hong Kong race 2
+## 681      Hong Kong race 2
+## 682      Hong Kong race 2
+## 683             Marrakesh
+## 684             Marrakesh
+## 685             Marrakesh
+## 686             Marrakesh
+## 687             Marrakesh
+## 688             Marrakesh
+## 689             Marrakesh
+## 690             Marrakesh
+## 691             Marrakesh
+## 692             Marrakesh
+## 693             Marrakesh
+## 694             Marrakesh
+## 695             Marrakesh
+## 696             Marrakesh
+## 697             Marrakesh
+## 698             Marrakesh
+## 699             Marrakesh
+## 700             Marrakesh
+## 701             Marrakesh
+## 702             Marrakesh
+## 703              Santiago
+## 704              Santiago
+## 705              Santiago
+## 706              Santiago
+## 707              Santiago
+## 708              Santiago
+## 709              Santiago
+## 710              Santiago
+## 711              Santiago
+## 712              Santiago
+## 713              Santiago
+## 714              Santiago
+## 715              Santiago
+## 716              Santiago
+## 717              Santiago
+## 718              Santiago
+## 719              Santiago
+## 720              Santiago
+## 721              Santiago
+## 722              Santiago
+## 723           Mexico City
+## 724           Mexico City
+## 725           Mexico City
+## 726           Mexico City
+## 727           Mexico City
+## 728           Mexico City
+## 729           Mexico City
+## 730           Mexico City
+## 731           Mexico City
+## 732           Mexico City
+## 733           Mexico City
+## 734           Mexico City
+## 735           Mexico City
+## 736           Mexico City
+## 737           Mexico City
+## 738           Mexico City
+## 739           Mexico City
+## 740           Mexico City
+## 741           Mexico City
+## 742           Mexico City
+## 743        Punta del Este
+## 744        Punta del Este
+## 745        Punta del Este
+## 746        Punta del Este
+## 747        Punta del Este
+## 748        Punta del Este
+## 749        Punta del Este
+## 750        Punta del Este
+## 751        Punta del Este
+## 752        Punta del Este
+## 753        Punta del Este
+## 754        Punta del Este
+## 755        Punta del Este
+## 756        Punta del Este
+## 757        Punta del Este
+## 758        Punta del Este
+## 759        Punta del Este
+## 760        Punta del Este
+## 761        Punta del Este
+## 762        Punta del Este
+## 763                  Rome
+## 764                  Rome
+## 765                  Rome
+## 766                  Rome
+## 767                  Rome
+## 768                  Rome
+## 769                  Rome
+## 770                  Rome
+## 771                  Rome
+## 772                  Rome
+## 773                  Rome
+## 774                  Rome
+## 775                  Rome
+## 776                  Rome
+## 777                  Rome
+## 778                  Rome
+## 779                  Rome
+## 780                  Rome
+## 781                  Rome
+## 782                  Rome
+## 783                 Paris
+## 784                 Paris
+## 785                 Paris
+## 786                 Paris
+## 787                 Paris
+## 788                 Paris
+## 789                 Paris
+## 790                 Paris
+## 791                 Paris
+## 792                 Paris
+## 793                 Paris
+## 794                 Paris
+## 795                 Paris
+## 796                 Paris
+## 797                 Paris
+## 798                 Paris
+## 799                 Paris
+## 800                 Paris
+## 801                 Paris
+## 802                 Paris
+## 803                Berlin
+## 804                Berlin
+## 805                Berlin
+## 806                Berlin
+## 807                Berlin
+## 808                Berlin
+## 809                Berlin
+## 810                Berlin
+## 811                Berlin
+## 812                Berlin
+## 813                Berlin
+## 814                Berlin
+## 815                Berlin
+## 816                Berlin
+## 817                Berlin
+## 818                Berlin
+## 819                Berlin
+## 820                Berlin
+## 821                Berlin
+## 822                Berlin
+## 823                Zürich
+## 824                Zürich
+## 825                Zürich
+## 826                Zürich
+## 827                Zürich
+## 828                Zürich
+## 829                Zürich
+## 830                Zürich
+## 831                Zürich
+## 832                Zürich
+## 833                Zürich
+## 834                Zürich
+## 835                Zürich
+## 836                Zürich
+## 837                Zürich
+## 838                Zürich
+## 839                Zürich
+## 840                Zürich
+## 841                Zürich
+## 842                Zürich
+## 843         New York City
+## 844         New York City
+## 845         New York City
+## 846         New York City
+## 847         New York City
+## 848         New York City
+## 849         New York City
+## 850         New York City
+## 851         New York City
+## 852         New York City
+## 853         New York City
+## 854         New York City
+## 855         New York City
+## 856         New York City
+## 857         New York City
+## 858         New York City
+## 859         New York City
+## 860         New York City
+## 861         New York City
+## 862         New York City
+## 863  New York City race 2
+## 864  New York City race 2
+## 865  New York City race 2
+## 866  New York City race 2
+## 867  New York City race 2
+## 868  New York City race 2
+## 869  New York City race 2
+## 870  New York City race 2
+## 871  New York City race 2
+## 872  New York City race 2
+## 873  New York City race 2
+## 874  New York City race 2
+## 875  New York City race 2
+## 876  New York City race 2
+## 877  New York City race 2
+## 878  New York City race 2
+## 879  New York City race 2
+## 880  New York City race 2
+## 881  New York City race 2
+## 882  New York City race 2
+## 883            Ad Diriyah
+## 884            Ad Diriyah
+## 885            Ad Diriyah
+## 886            Ad Diriyah
+## 887            Ad Diriyah
+## 888            Ad Diriyah
+## 889            Ad Diriyah
+## 890            Ad Diriyah
+## 891            Ad Diriyah
+## 892            Ad Diriyah
+## 893            Ad Diriyah
+## 894            Ad Diriyah
+## 895            Ad Diriyah
+## 896            Ad Diriyah
+## 897            Ad Diriyah
+## 898            Ad Diriyah
+## 899            Ad Diriyah
+## 900            Ad Diriyah
+## 901            Ad Diriyah
+## 902            Ad Diriyah
+## 903            Ad Diriyah
+## 904            Ad Diriyah
+## 905             Marrakesh
+## 906             Marrakesh
+## 907             Marrakesh
+## 908             Marrakesh
+## 909             Marrakesh
+## 910             Marrakesh
+## 911             Marrakesh
+## 912             Marrakesh
+## 913             Marrakesh
+## 914             Marrakesh
+## 915             Marrakesh
+## 916             Marrakesh
+## 917             Marrakesh
+## 918             Marrakesh
+## 919             Marrakesh
+## 920             Marrakesh
+## 921             Marrakesh
+## 922             Marrakesh
+## 923             Marrakesh
+## 924             Marrakesh
+## 925             Marrakesh
+## 926             Marrakesh
+## 927              Santiago
+## 928              Santiago
+## 929              Santiago
+## 930              Santiago
+## 931              Santiago
+## 932              Santiago
+## 933              Santiago
+## 934              Santiago
+## 935              Santiago
+## 936              Santiago
+## 937              Santiago
+## 938              Santiago
+## 939              Santiago
+## 940              Santiago
+## 941              Santiago
+## 942              Santiago
+## 943              Santiago
+## 944              Santiago
+## 945              Santiago
+## 946              Santiago
+## 947              Santiago
+## 948              Santiago
+## 949           Mexico City
+## 950           Mexico City
+## 951           Mexico City
+## 952           Mexico City
+## 953           Mexico City
+## 954           Mexico City
+## 955           Mexico City
+## 956           Mexico City
+## 957           Mexico City
+## 958           Mexico City
+## 959           Mexico City
+## 960           Mexico City
+## 961           Mexico City
+## 962           Mexico City
+## 963           Mexico City
+## 964           Mexico City
+## 965           Mexico City
+## 966           Mexico City
+## 967           Mexico City
+## 968           Mexico City
+## 969           Mexico City
+## 970           Mexico City
+## 971             Hong Kong
+## 972             Hong Kong
+## 973             Hong Kong
+## 974             Hong Kong
+## 975             Hong Kong
+## 976             Hong Kong
+## 977             Hong Kong
+## 978             Hong Kong
+## 979             Hong Kong
+## 980             Hong Kong
+## 981             Hong Kong
+## 982             Hong Kong
+## 983             Hong Kong
+## 984             Hong Kong
+## 985             Hong Kong
+## 986             Hong Kong
+## 987             Hong Kong
+## 988             Hong Kong
+## 989             Hong Kong
+## 990             Hong Kong
+## 991             Hong Kong
+## 992             Hong Kong
+## 993                 Sanya
+## 994                 Sanya
+## 995                 Sanya
+## 996                 Sanya
+## 997                 Sanya
+## 998                 Sanya
+## 999                 Sanya
+## 1000                Sanya
+## 1001                Sanya
+## 1002                Sanya
+## 1003                Sanya
+## 1004                Sanya
+## 1005                Sanya
+## 1006                Sanya
+## 1007                Sanya
+## 1008                Sanya
+## 1009                Sanya
+## 1010                Sanya
+## 1011                Sanya
+## 1012                Sanya
+## 1013                Sanya
+## 1014                Sanya
+## 1015                 Rome
+## 1016                 Rome
+## 1017                 Rome
+## 1018                 Rome
+## 1019                 Rome
+## 1020                 Rome
+## 1021                 Rome
+## 1022                 Rome
+## 1023                 Rome
+## 1024                 Rome
+## 1025                 Rome
+## 1026                 Rome
+## 1027                 Rome
+## 1028                 Rome
+## 1029                 Rome
+## 1030                 Rome
+## 1031                 Rome
+## 1032                 Rome
+## 1033                 Rome
+## 1034                 Rome
+## 1035                 Rome
+## 1036                 Rome
+## 1037                Paris
+## 1038                Paris
+## 1039                Paris
+## 1040                Paris
+## 1041                Paris
+## 1042                Paris
+## 1043                Paris
+## 1044                Paris
+## 1045                Paris
+## 1046                Paris
+## 1047                Paris
+## 1048                Paris
+## 1049                Paris
+## 1050                Paris
+## 1051                Paris
+## 1052                Paris
+## 1053                Paris
+## 1054                Paris
+## 1055                Paris
+## 1056                Paris
+## 1057                Paris
+## 1058                Paris
+## 1059               Monaco
+## 1060               Monaco
+## 1061               Monaco
+## 1062               Monaco
+## 1063               Monaco
+## 1064               Monaco
+## 1065               Monaco
+## 1066               Monaco
+## 1067               Monaco
+## 1068               Monaco
+## 1069               Monaco
+## 1070               Monaco
+## 1071               Monaco
+## 1072               Monaco
+## 1073               Monaco
+## 1074               Monaco
+## 1075               Monaco
+## 1076               Monaco
+## 1077               Monaco
+## 1078               Monaco
+## 1079               Monaco
+## 1080               Monaco
+## 1081               Berlin
+## 1082               Berlin
+## 1083               Berlin
+## 1084               Berlin
+## 1085               Berlin
+## 1086               Berlin
+## 1087               Berlin
+## 1088               Berlin
+## 1089               Berlin
+## 1090               Berlin
+## 1091               Berlin
+## 1092               Berlin
+## 1093               Berlin
+## 1094               Berlin
+## 1095               Berlin
+## 1096               Berlin
+## 1097               Berlin
+## 1098               Berlin
+## 1099               Berlin
+## 1100               Berlin
+## 1101               Berlin
+## 1102               Berlin
+## 1103                Swiss
+## 1104                Swiss
+## 1105                Swiss
+## 1106                Swiss
+## 1107                Swiss
+## 1108                Swiss
+## 1109                Swiss
+## 1110                Swiss
+## 1111                Swiss
+## 1112                Swiss
+## 1113                Swiss
+## 1114                Swiss
+## 1115                Swiss
+## 1116                Swiss
+## 1117                Swiss
+## 1118                Swiss
+## 1119                Swiss
+## 1120                Swiss
+## 1121                Swiss
+## 1122                Swiss
+## 1123                Swiss
+## 1124                Swiss
+## 1125        New York City
+## 1126        New York City
+## 1127        New York City
+## 1128        New York City
+## 1129        New York City
+## 1130        New York City
+## 1131        New York City
+## 1132        New York City
+## 1133        New York City
+## 1134        New York City
+## 1135        New York City
+## 1136        New York City
+## 1137        New York City
+## 1138        New York City
+## 1139        New York City
+## 1140        New York City
+## 1141        New York City
+## 1142        New York City
+## 1143        New York City
+## 1144        New York City
+## 1145        New York City
+## 1146        New York City
+## 1147 New York City race 2
+## 1148 New York City race 2
+## 1149 New York City race 2
+## 1150 New York City race 2
+## 1151 New York City race 2
+## 1152 New York City race 2
+## 1153 New York City race 2
+## 1154 New York City race 2
+## 1155 New York City race 2
+## 1156 New York City race 2
+## 1157 New York City race 2
+## 1158 New York City race 2
+## 1159 New York City race 2
+## 1160 New York City race 2
+## 1161 New York City race 2
+## 1162 New York City race 2
+## 1163 New York City race 2
+## 1164 New York City race 2
+## 1165 New York City race 2
+## 1166 New York City race 2
+## 1167 New York City race 2
+## 1168 New York City race 2
+## 1169              Diriyah
+## 1170              Diriyah
+## 1171              Diriyah
+## 1172              Diriyah
+## 1173              Diriyah
+## 1174              Diriyah
+## 1175              Diriyah
+## 1176              Diriyah
+## 1177              Diriyah
+## 1178              Diriyah
+## 1179              Diriyah
+## 1180              Diriyah
+## 1181              Diriyah
+## 1182              Diriyah
+## 1183              Diriyah
+## 1184              Diriyah
+## 1185              Diriyah
+## 1186              Diriyah
+## 1187              Diriyah
+## 1188              Diriyah
+## 1189              Diriyah
+## 1190              Diriyah
+## 1191              Diriyah
+## 1192              Diriyah
+## 1193       Diriyah race 2
+## 1194       Diriyah race 2
+## 1195       Diriyah race 2
+## 1196       Diriyah race 2
+## 1197       Diriyah race 2
+## 1198       Diriyah race 2
+## 1199       Diriyah race 2
+## 1200       Diriyah race 2
+## 1201       Diriyah race 2
+## 1202       Diriyah race 2
+## 1203       Diriyah race 2
+## 1204       Diriyah race 2
+## 1205       Diriyah race 2
+## 1206       Diriyah race 2
+## 1207       Diriyah race 2
+## 1208       Diriyah race 2
+## 1209       Diriyah race 2
+## 1210       Diriyah race 2
+## 1211       Diriyah race 2
+## 1212       Diriyah race 2
+## 1213       Diriyah race 2
+## 1214       Diriyah race 2
+## 1215       Diriyah race 2
+## 1216       Diriyah race 2
+## 1217             Santiago
+## 1218             Santiago
+## 1219             Santiago
+## 1220             Santiago
+## 1221             Santiago
+## 1222             Santiago
+## 1223             Santiago
+## 1224             Santiago
+## 1225             Santiago
+## 1226             Santiago
+## 1227             Santiago
+## 1228             Santiago
+## 1229             Santiago
+## 1230             Santiago
+## 1231             Santiago
+## 1232             Santiago
+## 1233             Santiago
+## 1234             Santiago
+## 1235             Santiago
+## 1236             Santiago
+## 1237             Santiago
+## 1238             Santiago
+## 1239             Santiago
+## 1240             Santiago
+## 1241          Mexico City
+## 1242          Mexico City
+## 1243          Mexico City
+## 1244          Mexico City
+## 1245          Mexico City
+## 1246          Mexico City
+## 1247          Mexico City
+## 1248          Mexico City
+## 1249          Mexico City
+## 1250          Mexico City
+## 1251          Mexico City
+## 1252          Mexico City
+## 1253          Mexico City
+## 1254          Mexico City
+## 1255          Mexico City
+## 1256          Mexico City
+## 1257          Mexico City
+## 1258          Mexico City
+## 1259          Mexico City
+## 1260          Mexico City
+## 1261          Mexico City
+## 1262          Mexico City
+## 1263          Mexico City
+## 1264          Mexico City
+## 1265            Marrakesh
+## 1266            Marrakesh
+## 1267            Marrakesh
+## 1268            Marrakesh
+## 1269            Marrakesh
+## 1270            Marrakesh
+## 1271            Marrakesh
+## 1272            Marrakesh
+## 1273            Marrakesh
+## 1274            Marrakesh
+## 1275            Marrakesh
+## 1276            Marrakesh
+## 1277            Marrakesh
+## 1278            Marrakesh
+## 1279            Marrakesh
+## 1280            Marrakesh
+## 1281            Marrakesh
+## 1282            Marrakesh
+## 1283            Marrakesh
+## 1284            Marrakesh
+## 1285            Marrakesh
+## 1286            Marrakesh
+## 1287            Marrakesh
+## 1288            Marrakesh
+## 1289               Berlin
+## 1290               Berlin
+## 1291               Berlin
+## 1292               Berlin
+## 1293               Berlin
+## 1294               Berlin
+## 1295               Berlin
+## 1296               Berlin
+## 1297               Berlin
+## 1298               Berlin
+## 1299               Berlin
+## 1300               Berlin
+## 1301               Berlin
+## 1302               Berlin
+## 1303               Berlin
+## 1304               Berlin
+## 1305               Berlin
+## 1306               Berlin
+## 1307               Berlin
+## 1308               Berlin
+## 1309               Berlin
+## 1310               Berlin
+## 1311               Berlin
+## 1312               Berlin
+## 1313        Berlin race 2
+## 1314        Berlin race 2
+## 1315        Berlin race 2
+## 1316        Berlin race 2
+## 1317        Berlin race 2
+## 1318        Berlin race 2
+## 1319        Berlin race 2
+## 1320        Berlin race 2
+## 1321        Berlin race 2
+## 1322        Berlin race 2
+## 1323        Berlin race 2
+## 1324        Berlin race 2
+## 1325        Berlin race 2
+## 1326        Berlin race 2
+## 1327        Berlin race 2
+## 1328        Berlin race 2
+## 1329        Berlin race 2
+## 1330        Berlin race 2
+## 1331        Berlin race 2
+## 1332        Berlin race 2
+## 1333        Berlin race 2
+## 1334        Berlin race 2
+## 1335        Berlin race 2
+## 1336        Berlin race 2
+## 1337        Berlin race 3
+## 1338        Berlin race 3
+## 1339        Berlin race 3
+## 1340        Berlin race 3
+## 1341        Berlin race 3
+## 1342        Berlin race 3
+## 1343        Berlin race 3
+## 1344        Berlin race 3
+## 1345        Berlin race 3
+## 1346        Berlin race 3
+## 1347        Berlin race 3
+## 1348        Berlin race 3
+## 1349        Berlin race 3
+## 1350        Berlin race 3
+## 1351        Berlin race 3
+## 1352        Berlin race 3
+## 1353        Berlin race 3
+## 1354        Berlin race 3
+## 1355        Berlin race 3
+## 1356        Berlin race 3
+## 1357        Berlin race 3
+## 1358        Berlin race 3
+## 1359        Berlin race 3
+## 1360        Berlin race 3
+## 1361        Berlin race 4
+## 1362        Berlin race 4
+## 1363        Berlin race 4
+## 1364        Berlin race 4
+## 1365        Berlin race 4
+## 1366        Berlin race 4
+## 1367        Berlin race 4
+## 1368        Berlin race 4
+## 1369        Berlin race 4
+## 1370        Berlin race 4
+## 1371        Berlin race 4
+## 1372        Berlin race 4
+## 1373        Berlin race 4
+## 1374        Berlin race 4
+## 1375        Berlin race 4
+## 1376        Berlin race 4
+## 1377        Berlin race 4
+## 1378        Berlin race 4
+## 1379        Berlin race 4
+## 1380        Berlin race 4
+## 1381        Berlin race 4
+## 1382        Berlin race 4
+## 1383        Berlin race 4
+## 1384        Berlin race 4
+## 1385        Berlin race 5
+## 1386        Berlin race 5
+## 1387        Berlin race 5
+## 1388        Berlin race 5
+## 1389        Berlin race 5
+## 1390        Berlin race 5
+## 1391        Berlin race 5
+## 1392        Berlin race 5
+## 1393        Berlin race 5
+## 1394        Berlin race 5
+## 1395        Berlin race 5
+## 1396        Berlin race 5
+## 1397        Berlin race 5
+## 1398        Berlin race 5
+## 1399        Berlin race 5
+## 1400        Berlin race 5
+## 1401        Berlin race 5
+## 1402        Berlin race 5
+## 1403        Berlin race 5
+## 1404        Berlin race 5
+## 1405        Berlin race 5
+## 1406        Berlin race 5
+## 1407        Berlin race 5
+## 1408        Berlin race 5
+## 1409        Berlin race 6
+## 1410        Berlin race 6
+## 1411        Berlin race 6
+## 1412        Berlin race 6
+## 1413        Berlin race 6
+## 1414        Berlin race 6
+## 1415        Berlin race 6
+## 1416        Berlin race 6
+## 1417        Berlin race 6
+## 1418        Berlin race 6
+## 1419        Berlin race 6
+## 1420        Berlin race 6
+## 1421        Berlin race 6
+## 1422        Berlin race 6
+## 1423        Berlin race 6
+## 1424        Berlin race 6
+## 1425        Berlin race 6
+## 1426        Berlin race 6
+## 1427        Berlin race 6
+## 1428        Berlin race 6
+## 1429        Berlin race 6
+## 1430        Berlin race 6
+## 1431        Berlin race 6
+## 1432        Berlin race 6
+## 1433              Diriyah
+## 1434              Diriyah
+## 1435              Diriyah
+## 1436              Diriyah
+## 1437              Diriyah
+## 1438              Diriyah
+## 1439              Diriyah
+## 1440              Diriyah
+## 1441              Diriyah
+## 1442              Diriyah
+## 1443              Diriyah
+## 1444              Diriyah
+## 1445              Diriyah
+## 1446              Diriyah
+## 1447              Diriyah
+## 1448              Diriyah
+## 1449              Diriyah
+## 1450              Diriyah
+## 1451              Diriyah
+## 1452              Diriyah
+## 1453              Diriyah
+## 1454              Diriyah
+## 1455              Diriyah
+## 1456              Diriyah
+## 1457       Diriyah race 2
+## 1458       Diriyah race 2
+## 1459       Diriyah race 2
+## 1460       Diriyah race 2
+## 1461       Diriyah race 2
+## 1462       Diriyah race 2
+## 1463       Diriyah race 2
+## 1464       Diriyah race 2
+## 1465       Diriyah race 2
+## 1466       Diriyah race 2
+## 1467       Diriyah race 2
+## 1468       Diriyah race 2
+## 1469       Diriyah race 2
+## 1470       Diriyah race 2
+## 1471       Diriyah race 2
+## 1472       Diriyah race 2
+## 1473       Diriyah race 2
+## 1474       Diriyah race 2
+## 1475       Diriyah race 2
+## 1476       Diriyah race 2
+## 1477       Diriyah race 2
+## 1478       Diriyah race 2
+## 1479       Diriyah race 2
+## 1480       Diriyah race 2</code></pre>
+<pre class="r"><code>formula_e_rank1 &lt;- filter(formula_e, rank==1) %&gt;%
+  select(., season, race_city, time_retired) %&gt;% arrange(season) %&gt;%
+  mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0(&quot;0:&quot;, time_retired),
+                                  nchar(time_retired) &gt; 9 ~ time_retired)) %&gt;%
+  filter(is.na(time_retired) == FALSE)
+  
+formula_e_rank1 %&gt;%
+  count(race_city)</code></pre>
+<pre><code>##               race_city n
+## 1            Ad Diriyah 1
+## 2               Beijing 2
+## 3                Berlin 6
+## 4         Berlin race 2 2
+## 5         Berlin race 3 1
+## 6         Berlin race 4 1
+## 7         Berlin race 5 1
+## 8         Berlin race 6 1
+## 9          Buenos Aires 3
+## 10              Diriyah 2
+## 11       Diriyah race 2 2
+## 12            Hong Kong 3
+## 13     Hong Kong race 2 1
+## 14               London 2
+## 15        London race 2 2
+## 16           Long Beach 2
+## 17            Marrakesh 3
+## 18          Mexico City 5
+## 19                Miami 1
+## 20               Monaco 3
+## 21             Montreal 1
+## 22      Montreal race 2 1
+## 23               Moscow 1
+## 24        New York City 3
+## 25 New York City race 2 3
+## 26                Paris 4
+## 27       Punta del Este 3
+## 28            Putrajaya 2
+## 29                 Rome 2
+## 30             Santiago 3
+## 31                Sanya 1
+## 32                Swiss 1
+## 33               Zürich 1</code></pre>
+<pre class="r"><code>formula_e_rank1 %&gt;%
+  arrange(time_retired)</code></pre>
+<pre><code>##    season            race_city time_retired
+## 1       7       Diriyah race 2  0:39:50.836
+## 2       1               Moscow  0:43:18.867
+## 3       2           Long Beach  0:45:11.582
+## 4       2         Buenos Aires  0:45:28.385
+## 5       3         Buenos Aires  0:45:45.623
+## 6       1        London race 2  0:45:48.792
+## 7       2       Punta del Este  0:45:59.697
+## 8       1           Long Beach  0:46:01.971
+## 9       5               Monaco  0:46:05.547
+## 10      6             Santiago  0:46:11.511
+## 11      1                Miami  0:46:12.349
+## 12      6        Berlin race 3  0:46:15.512
+## 13      5        New York City  0:46:16.399
+## 14      6              Diriyah  0:46:17.371
+## 15      6        Berlin race 2  0:46:19.412
+## 16      6        Berlin race 4  0:46:24.803
+## 17      5           Ad Diriyah  0:46:29.377
+## 18      6          Mexico City  0:46:42.093
+## 19      7              Diriyah  0:46:44.765
+## 20      5            Marrakesh  0:46:45.884
+## 21      6       Diriyah race 2  0:46:48.327
+## 22      6            Marrakesh  0:46:52.757
+## 23      5               Berlin  0:47:02.477
+## 24      5             Santiago  0:47:02:511
+## 25      6               Berlin  0:47:08.261
+## 26      6        Berlin race 6  0:47:22.107
+## 27      5 New York City race 2  0:47:22.289
+## 28      6        Berlin race 5  0:47:28.880
+## 29      5                Paris  0:47:50.510
+## 30      1               London  0:47:54.784
+## 31      4            Marrakesh  0:48:04.751
+## 32      1               Monaco  0:48:05.225
+## 33      1               Berlin  0:48:26.566
+## 34      2          Mexico City  0:48:28.409
+## 35      1         Buenos Aires  0:48:52.100
+## 36      1       Punta del Este  0:49:08.990
+## 37      4     Hong Kong race 2  0:50:05.084
+## 38      2              Beijing  0:50:08.835
+## 39      2            Putrajaya  0:50:17.449
+## 40      4       Punta del Este  0:50:43.809
+## 41      4          Mexico City  0:50:45.164
+## 42      3               Monaco  0:51:05.488
+## 43      1            Putrajaya  0:51:11.979
+## 44      4               Zürich  0:51:19.811
+## 45      1              Beijing  0:52:23.413
+## 46      3        New York City  0:52:29.275
+## 47      2                Paris  0:52:40.324
+## 48      3            Hong Kong  0:53:13.298
+## 49      3               Berlin  0:53:19.661
+## 50      2               Berlin  0:53:46.086
+## 51      2               London  0:53:56.683
+## 52      3      Montreal race 2  0:54:12.606
+## 53      4                Paris  0:54:49.102
+## 54      4               Berlin  0:55:35.546
+## 55      3          Mexico City  0:56&#39;27.535
+## 56      3        Berlin race 2  0:56:02.155
+## 57      2        London race 2  0:56:32.649
+## 58      3             Montreal  0:56:55.592
+## 59      3 New York City race 2  0:58:09.388
+## 60      4                 Rome  0:58:20.656
+## 61      5            Hong Kong  0:59:36.119
+## 62      3                Paris  0:59:41.125
+## 63      4             Santiago  1:01:24.514
+## 64      4 New York City race 2  1:01:38.089
+## 65      4        New York City  1:02:30.054
+## 66      5                Sanya  1:02:50.185
+## 67      5          Mexico City  1:13:15.422
+## 68      4            Hong Kong  1:17:10.486
+## 69      5                Swiss  1:25:26.873
+## 70      5                 Rome  1:33:51.140</code></pre>
+<pre class="r"><code>formula_e_rank1_mini &lt;- formula_e_rank1 %&gt;%
+  filter(race_city == &quot;Berlin&quot; | 
+           race_city == &quot;Marrakesh&quot; |
+           race_city == &quot;Mexico City&quot; |
+           race_city == &quot;Paris&quot;)
+
+formula_e_rank1_mini</code></pre>
+<pre><code>##    season   race_city time_retired
+## 1       1      Berlin  0:48:26.566
+## 2       2       Paris  0:52:40.324
+## 3       2 Mexico City  0:48:28.409
+## 4       2      Berlin  0:53:46.086
+## 5       3 Mexico City  0:56&#39;27.535
+## 6       3      Berlin  0:53:19.661
+## 7       3       Paris  0:59:41.125
+## 8       4 Mexico City  0:50:45.164
+## 9       4      Berlin  0:55:35.546
+## 10      4   Marrakesh  0:48:04.751
+## 11      4       Paris  0:54:49.102
+## 12      5 Mexico City  1:13:15.422
+## 13      5      Berlin  0:47:02.477
+## 14      5   Marrakesh  0:46:45.884
+## 15      5       Paris  0:47:50.510
+## 16      6 Mexico City  0:46:42.093
+## 17      6   Marrakesh  0:46:52.757
+## 18      6      Berlin  0:47:08.261</code></pre>
 <pre class="r"><code>formu &lt;- formula_e %&gt;% 
   filter(is.numeric(as.numeric(rank))) %&gt;% 
   mutate(nrank=as.numeric(rank)) %&gt;% 
@@ -6378,11 +6446,11 @@ formula_e %&gt;% mutate(race_date = ymd(race_date)) %&gt;% arrange(race_date) </
 <pre><code>## Warning: There was 1 warning in `filter()`.
 ## ℹ In argument: `is.numeric(as.numeric(rank))`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
 ## ℹ In argument: `nrank = as.numeric(rank)`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre class="r"><code>formula_e &lt;- left_join(formula_e, formu, by = &quot;team&quot;)
 
 formu &lt;- formula_e %&gt;% 
@@ -6394,12 +6462,79 @@ formu &lt;- formula_e %&gt;%
 <pre><code>## Warning: There was 1 warning in `filter()`.
 ## ℹ In argument: `is.numeric(as.numeric(rank))`.
 ## Caused by warning:
-## ! NAs introduced by coercion
+## ! 强制改变过程中产生了NA
 ## There was 1 warning in `mutate()`.
 ## ℹ In argument: `nrank = as.numeric(rank)`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre class="r"><code>formula_e &lt;- left_join(formula_e, formu, by = &quot;driver&quot;)</code></pre>
+<pre class="r"><code>formula_e_rank1_mini %&gt;%
+  ggplot(mapping = aes(x = season, y = time_retired, color = race_city, group_by=race_city)) +
+  geom_point() +
+  geom_smooth(se = FALSE, method = &quot;lm&quot;, formula=&#39;y~x&#39;)</code></pre>
+<p><img src="data:image/png;base64,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" width="672" />
+##Tudor: Finish time vs season graph &amp; fix time format ##Sun:
+Frequency table of teams reaching top 5 ranks in each race ##Lucien:
+Average time distribution ##ybx: Modelling</p>
+<pre class="r"><code>formula_e_with_nrank &lt;- formula_e %&gt;%
+  filter(is.numeric(as.numeric(rank))) %&gt;% 
+  mutate(nrank = as.numeric(rank)) </code></pre>
+<pre><code>## Warning: There was 1 warning in `filter()`.
+## ℹ In argument: `is.numeric(as.numeric(rank))`.
+## Caused by warning:
+## ! 强制改变过程中产生了NA</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `nrank = as.numeric(rank)`.
+## Caused by warning:
+## ! 强制改变过程中产生了NA</code></pre>
+<pre class="r"><code>top_5_teams &lt;- formula_e_with_nrank %&gt;%
+  filter(nrank &lt;= 5) %&gt;%
+  select(season, race_city, team, nrank) %&gt;%
+  arrange(season, race_city, nrank)
+
+top_5_teams_summary &lt;- top_5_teams %&gt;%
+  group_by(season, race_city, team) %&gt;%
+  count()
+
+print(top_5_teams_summary)</code></pre>
+<pre><code>## # A tibble: 303 × 4
+## # Groups:   season, race_city, team [303]
+##    season race_city    team                n
+##     &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;           &lt;int&gt;
+##  1      1 Beijing      Andretti            2
+##  2      1 Beijing      Audi Sport ABT      1
+##  3      1 Beijing      Mahindra Racing     1
+##  4      1 Beijing      Virgin Racing       1
+##  5      1 Berlin       Dragon Racing       2
+##  6      1 Berlin       NEXTEV TCR          1
+##  7      1 Berlin       Venturi             1
+##  8      1 Berlin       e.dams-Renault      1
+##  9      1 Buenos Aires Amlin Aguri         1
+## 10      1 Buenos Aires China Racing        1
+## # ℹ 293 more rows</code></pre>
+<pre class="r"><code>selected_cities &lt;- c(&quot;Mexico City&quot;, &quot;Riyadh&quot;, &quot;Monaco&quot;, &quot;Paris&quot;)
+
+selected_cities_data &lt;- top_5_teams_summary %&gt;%
+  filter(race_city %in% selected_cities)
+
+top_teams_selected_cities &lt;- selected_cities_data %&gt;%
+  group_by(team) %&gt;%
+  summarise(total_frequency = sum(n), .groups = &quot;keep&quot;) %&gt;%
+  top_n(3, total_frequency)
+
+filtered_data &lt;- selected_cities_data %&gt;%
+  filter(team %in% top_teams_selected_cities$team)
+
+histogram_top_teams_selected_cities &lt;- ggplot(filtered_data, aes(x = race_city, fill = factor(team))) +
+  geom_bar(position = &quot;dodge&quot;, stat = &quot;count&quot;) +
+  labs(title = &quot;Top Teams&#39; Performance in Selected Cities&quot;,
+       x = &quot;Race Track&quot;,
+       y = &quot;Frequency&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_discrete(name = &quot;Team&quot;)
+
+print(histogram_top_teams_selected_cities)</code></pre>
+<p><img src="data:image/png;base64,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td3d57/5q8z7664DbtTEvgg4NhdCa12VwBBpItCHu4wXfmF+sO464EZN7IuAY3MhtA4qExgeDQT65Mbzvx/HT7+2+6L5ybrrgBs1sS8Cjs2F0LqoTWBwNBDou7tfpf89ufE5swm67jrgRk3si4BjcyG0DioTGB7NJ5E+fQMCXSkBx+ZCaO3qERgozQX65MYXzGmkddcBN2piXwQcmwuhtatHYKA0FuhHN3a/LV9/RtBNlgAAwA8aCvTd3d3n/zT5yQmB/kOFtWYEADAUmgn02X/3lRu7z3/LfHutXTBVoGvNSF+40M/tCRdCa12VwBBpPgb6sdKHF6y1AkCg/uJCaO3qERgoLR7l/GTXnEVaawWAQP3FhdDa1SMwUFoINDsNv9YKAIH6iwuhtatHYKDUF+izt0XXHQJdLS5YpidcCK2L2gQGR6MnkV7U/k9ZawWAQP3FhdDa1yUwQBo9C7/7u7+Kn/109/nvGZ+stQJAoP7iQmidVCcwNJqMgX7Cd2N63pyEh0B7xQXL9IQLoXVQmcDwaDSJ9PTrRJ+vv5d5f60VAAL1FxdCa12VwBAJZ0d6CNRfXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYnXAity4oABgME6g0uWKYn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" width="672" /></p>
 
 
 
