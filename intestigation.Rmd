@@ -50,6 +50,7 @@ formula_e_rank1_mini <- formula_e_rank1_mini %>%
 
 formula_e_rank1_mini
 ```
+
 ```{r tidy retired_time}
 formula_e_tidy<- formula_e %>% 
   filter(nchar(time_retired) >= 4) %>% 
@@ -67,6 +68,7 @@ formula_e_tidy[472,13] <- "+39.137"
 formula_e_tidy[473,13] <- "+55.189"
 formula_e_tidy[549,13] <- "+1:13.880"
 formula_e_tidy[550,13] <- "+1:31.382"
+formula_e_tidy[663,13] <- "47:02.511"
 formula_e_tidy[836,13] <- "+1:27.00912"
 ```
 
@@ -81,6 +83,7 @@ formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>%
   mutate(total_second = 0.0) %>% 
   arrange(race_date)
 ```
+
 ```{r calculation}
 i <- 1
 while (i <= nrow(formula_e_time)){
@@ -116,9 +119,10 @@ while (i <= nrow(formula_e_time)){
   i <- i+1
 }
 ```
+
 ```{r joining result to formula_e_tidy}
 formula_e_time <- select(formula_e_time, id, total_second)
-inner_join(formula_e_tidy, formula_e_time, by = "id")
+formula_e_tidy = inner_join(formula_e_tidy, formula_e_time, by = "id")
 ```
 
 ```{r calculate average rank}
