@@ -6441,6 +6441,8 @@ formula_e_rank1_mini</code></pre>
 ## 17      6   Marrakesh     2812.757
 ## 18      6      Berlin     2828.261</code></pre>
 <pre class="r"><code>formula_e_tidy&lt;- formula_e %&gt;% 
+  filter(rank != &quot;DSQ&quot;) %&gt;%
+  filter(rank != &quot;NC&quot;) %&gt;%
   filter(nchar(time_retired) &gt;= 4) %&gt;% 
   filter(grepl(&quot;a&quot;, time_retired) == FALSE) %&gt;% 
   filter(str_detect(time_retired, &quot;^[[:alpha:]]&quot;) == FALSE) %&gt;% 
@@ -6449,15 +6451,15 @@ formula_e_rank1_mini</code></pre>
 
 formula_e_tidy$id &lt;- c(1:nrow(formula_e_tidy))
 
-formula_e_tidy[312,13] &lt;- &quot;56:27.535&quot;
-formula_e_tidy[324,13] &lt;- &quot;+1:01.365&quot;
-formula_e_tidy[325,13] &lt;- &quot;+1:09.646&quot;
-formula_e_tidy[472,13] &lt;- &quot;+39.137&quot;
-formula_e_tidy[473,13] &lt;- &quot;+55.189&quot;
-formula_e_tidy[549,13] &lt;- &quot;+1:13.880&quot;
-formula_e_tidy[550,13] &lt;- &quot;+1:31.382&quot;
-formula_e_tidy[663,13] &lt;- &quot;47:02.511&quot;
-formula_e_tidy[836,13] &lt;- &quot;+1:27.00912&quot;</code></pre>
+formula_e_tidy[311,13] &lt;- &quot;56:27.535&quot;
+formula_e_tidy[323,13] &lt;- &quot;+1:01.365&quot;
+formula_e_tidy[324,13] &lt;- &quot;+1:09.646&quot;
+formula_e_tidy[471,13] &lt;- &quot;+39.137&quot;
+formula_e_tidy[472,13] &lt;- &quot;+55.189&quot;
+formula_e_tidy[548,13] &lt;- &quot;+1:13.880&quot;
+formula_e_tidy[549,13] &lt;- &quot;+1:31.382&quot;
+formula_e_tidy[662,13] &lt;- &quot;47:02.511&quot;
+formula_e_tidy[835,13] &lt;- &quot;+1:27.00912&quot;</code></pre>
 <pre class="r"><code>formula_e_time &lt;- select(formula_e_tidy, race_date, id, time_retired) %&gt;% 
   mutate(tidying_time = gsub(&quot;s&quot;, &quot;&quot;, time_retired, fixed=TRUE)) %&gt;% 
   mutate(finish_time = gsub(&quot; &quot;, &quot;&quot;, tidying_time)) %&gt;% 

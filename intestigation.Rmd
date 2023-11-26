@@ -53,6 +53,8 @@ formula_e_rank1_mini
 
 ```{r tidy retired_time}
 formula_e_tidy<- formula_e %>% 
+  filter(rank != "DSQ") %>%
+  filter(rank != "NC") %>%
   filter(nchar(time_retired) >= 4) %>% 
   filter(grepl("a", time_retired) == FALSE) %>% 
   filter(str_detect(time_retired, "^[[:alpha:]]") == FALSE) %>% 
@@ -61,15 +63,15 @@ formula_e_tidy<- formula_e %>%
 
 formula_e_tidy$id <- c(1:nrow(formula_e_tidy))
 
-formula_e_tidy[312,13] <- "56:27.535"
-formula_e_tidy[324,13] <- "+1:01.365"
-formula_e_tidy[325,13] <- "+1:09.646"
-formula_e_tidy[472,13] <- "+39.137"
-formula_e_tidy[473,13] <- "+55.189"
-formula_e_tidy[549,13] <- "+1:13.880"
-formula_e_tidy[550,13] <- "+1:31.382"
-formula_e_tidy[663,13] <- "47:02.511"
-formula_e_tidy[836,13] <- "+1:27.00912"
+formula_e_tidy[311,13] <- "56:27.535"
+formula_e_tidy[323,13] <- "+1:01.365"
+formula_e_tidy[324,13] <- "+1:09.646"
+formula_e_tidy[471,13] <- "+39.137"
+formula_e_tidy[472,13] <- "+55.189"
+formula_e_tidy[548,13] <- "+1:13.880"
+formula_e_tidy[549,13] <- "+1:31.382"
+formula_e_tidy[662,13] <- "47:02.511"
+formula_e_tidy[835,13] <- "+1:27.00912"
 ```
 
 ```{r create object for time calculation}
