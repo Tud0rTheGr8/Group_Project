@@ -47,6 +47,9 @@ formula_e_rank1_mini <- formula_e_rank1 %>%
            race_city == "Mexico City" |
            race_city == "Paris")
 
+formula_e_rank1_mini <- formula_e_rank1_mini %>%
+  mutate(time_retired = as.numeric(seconds(hms(time_retired))))
+
 formula_e_rank1_mini
 ```
 
