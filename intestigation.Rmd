@@ -17,9 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load-lib, message = FALSE}
 library(tidyverse)
 library(lubridate)
-
-
-
 ```
 
 
@@ -28,7 +25,8 @@ library(lubridate)
 formula_e <- read.csv("data/formula_e_race_results.csv")
 formula_e <- formula_e %>% mutate(race_city = substring(race_name,6))
 formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date)
-
+```
+```{r choose rank 1 data}
 formula_e_rank1 <- filter(formula_e, rank==1) %>%
   select(., season, race_city, time_retired) %>% arrange(season) %>%
   mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0("0:", time_retired),
@@ -52,7 +50,76 @@ formula_e_rank1_mini <- formula_e_rank1_mini %>%
 
 formula_e_rank1_mini
 ```
+```{r tidy retired_time}
+formula_e_tidy<- formula_e %>% 
+  filter(nchar(time_retired) >= 4) %>% 
+  filter(grepl("a", time_retired) == FALSE) %>% 
+  filter(str_detect(time_retired, "^[[:alpha:]]") == FALSE) %>% 
+  mutate(race_date = ymd(race_date)) %>% 
+  arrange(race_date)
 
+formula_e_tidy$id <- c(1:nrow(formula_e_tidy))
+
+formula_e_tidy[312,13] <- "56:27.535"
+formula_e_tidy[324,13] <- "+1:01.365"
+formula_e_tidy[325,13] <- "+1:09.646"
+formula_e_tidy[472,13] <- "+39.137"
+formula_e_tidy[473,13] <- "+55.189"
+formula_e_tidy[549,13] <- "+1:13.880"
+formula_e_tidy[550,13] <- "+1:31.382"
+formula_e_tidy[836,13] <- "+1:27.00912"
+```
+
+```{r create object for time calculation}
+formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>% 
+  mutate(tidying_time = gsub("s", "", time_retired, fixed=TRUE)) %>% 
+  mutate(finish_time = gsub(" ", "", tidying_time)) %>% 
+  mutate(list_of_time = strsplit(gsub(",", "", finish_time), ":")) %>% 
+  mutate(finish_hour = 0) %>% 
+  mutate(finish_minute = 0) %>% 
+  mutate(finish_second = 0.00) %>% 
+  mutate(total_second = 0.0) %>% 
+  arrange(race_date)
+```
+```{r calculation}
+i <- 1
+while (i <= nrow(formula_e_time)){
+  formula_e_time[i,7] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,8] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,9] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.double(formula_e_time[i,6][[1]][3]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.double(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 1 ~ as.double(formula_e_time[i,6][[1]][1]))
+  i <- i+1
+}
+
+bufferdate <- 0
+buffer_hour <- 0
+buffer_minute <- 0
+buffer_second <- 0
+i <- 1
+while (i <= nrow(formula_e_time)){
+  if (bufferdate != formula_e_time[i,1]){
+    bufferdate <- formula_e_time[i,1] 
+    buffer_hour <- formula_e_time[i,7] 
+    buffer_minute <- formula_e_time[i,8] 
+    buffer_second <- formula_e_time[i,9] 
+    formula_e_time[i,10] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
+  }else{
+    formula_e_time[i,10] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
+  }
+  i <- i+1
+}
+```
+```{r joining result to formula_e_tidy}
+formula_e_time <- select(formula_e_time, id, total_second)
+inner_join(formula_e_tidy, formula_e_time, by = "id")
+```
 
 ```{r calculate average rank}
 formu <- formula_e %>% 
