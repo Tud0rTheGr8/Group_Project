@@ -1,0 +1,408 @@
+---
+title: "IDS investigation worksheet"
+author: "by Knights Templar: Tudor,Mengchuan Sun, Jiacheng Zhang,Binxi Yang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+**Note:** You can use this file as you 'working document' where you can try out various investigation ideas and keep notes about your findings. How you use and structure this file is up to you. It is recommended that you keep notes about what you are investigating and what you find as this will make the process of creating your presentation and report easier. Please note that you _do not_ need to submit this file as part of your group project.
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load-lib, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+library(tidymodels)
+```
+
+
+```{r load-data, message=FALSE, warning=FALSE}
+# load your data 
+formula_e <- read.csv("data/formula_e_race_results.csv")
+formula_e <- formula_e %>% mutate(race_city = substring(race_name,6))
+head(formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date),10)
+```
+```{r choose rank 1 data, message=FALSE, warning=FALSE}
+formula_e_rank1 <- filter(formula_e, rank==1) %>%
+  select(., season, race_city, time_retired) %>% arrange(season) %>%
+  mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0("0:", time_retired),
+                                  nchar(time_retired) > 9 ~ time_retired)) %>%
+  filter(is.na(time_retired) == FALSE)
+  
+formula_e_rank1 %>%
+  count(race_city)
+
+formula_e_rank1 %>%
+  arrange(time_retired)
+
+formula_e_rank1_mini <- formula_e_rank1 %>%
+  filter(race_city == "Berlin" | 
+           race_city == "Marrakesh" |
+           race_city == "Mexico City" |
+           race_city == "Paris")
+
+formula_e_rank1_mini <- formula_e_rank1_mini %>%
+  mutate(time_retired = as.numeric(seconds(hms(time_retired))))
+
+formula_e_rank1_mini
+```
+
+```{r tidy retired_time, message=FALSE, warning=FALSE}
+formula_e_tidy<- formula_e %>% 
+  filter(rank != "DSQ") %>%
+  filter(rank != "NC") %>%
+  filter(nchar(time_retired) >= 4) %>% 
+  filter(grepl("a", time_retired) == FALSE) %>% 
+  filter(str_detect(time_retired, "^[[:alpha:]]") == FALSE) %>% 
+  mutate(race_date = ymd(race_date)) %>% 
+  arrange(race_date)
+
+formula_e_tidy$id <- c(1:nrow(formula_e_tidy))
+
+formula_e_tidy[311,13] <- "56:27.535"
+formula_e_tidy[323,13] <- "+1:01.365"
+formula_e_tidy[324,13] <- "+1:09.646"
+formula_e_tidy[471,13] <- "+39.137"
+formula_e_tidy[472,13] <- "+55.189"
+formula_e_tidy[548,13] <- "+1:13.880"
+formula_e_tidy[549,13] <- "+1:31.382"
+formula_e_tidy[662,13] <- "47:02.511"
+formula_e_tidy[835,13] <- "+1:27.00912"
+```
+
+```{r create object for time calculation, message=FALSE, warning=FALSE}
+formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>% 
+  mutate(tidying_time = gsub("s", "", time_retired, fixed=TRUE)) %>% 
+  mutate(finish_time = gsub(" ", "", tidying_time)) %>% 
+  mutate(list_of_time = strsplit(gsub(",", "", finish_time), ":")) %>% 
+  mutate(finish_hour = 0) %>% 
+  mutate(finish_minute = 0) %>% 
+  mutate(finish_second = 0.00) %>% 
+  mutate(total_second = 0.0) %>% 
+  arrange(race_date)
+```
+
+```{r calculation, message=FALSE, warning=FALSE}
+i <- 1
+while (i <= nrow(formula_e_time)){
+  formula_e_time[i,7] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,8] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,9] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.double(formula_e_time[i,6][[1]][3]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.double(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 1 ~ as.double(formula_e_time[i,6][[1]][1]))
+  i <- i+1
+}
+
+bufferdate <- 0
+buffer_hour <- 0
+buffer_minute <- 0
+buffer_second <- 0
+i <- 1
+while (i <= nrow(formula_e_time)){
+  if (bufferdate != formula_e_time[i,1]){
+    bufferdate <- formula_e_time[i,1] 
+    buffer_hour <- formula_e_time[i,7] 
+    buffer_minute <- formula_e_time[i,8] 
+    buffer_second <- formula_e_time[i,9] 
+    formula_e_time[i,10] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
+  }else{
+    formula_e_time[i,10] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
+  }
+  i <- i+1
+}
+```
+
+```{r joining result to formula_e_tidy, message=FALSE, warning=FALSE}
+formula_e_time <- select(formula_e_time, id, total_second)
+formula_e_tidy = inner_join(formula_e_tidy, formula_e_time, by = "id")
+```
+
+```{r calculate average rank, message=FALSE, warning=FALSE}
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(team, nrank) %>% 
+  group_by(team) %>% 
+  summarise(vAverage_Team_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "team")
+
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(driver, nrank) %>% 
+  group_by(driver) %>% 
+  summarise(Average_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "driver")
+```
+```{r rank 1 times over time, message=FALSE, warning=FALSE}
+
+formula_e_rank1_mini %>%
+  ggplot(mapping = aes(x = season, y = time_retired, color = race_city, group_by=race_city)) +
+  geom_point() +
+  geom_smooth(se = FALSE, method = "lm", formula='y~x')
+
+```
+##Tudor: Finish time vs season graph & fix time format
+##Sun: Frequency table of teams reaching top 5 ranks in each race
+##Lucien: Average time distribution
+##ybx: Modelling
+
+```{r top 5 frequency, message=FALSE, warning=FALSE}
+
+formula_e_with_nrank <- formula_e %>%
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank = as.numeric(rank)) 
+
+top_5_teams <- formula_e_with_nrank %>%
+  filter(nrank <= 5) %>%
+  select(season, race_city, team, nrank) %>%
+  arrange(season, race_city, nrank)
+
+top_5_teams_summary <- top_5_teams %>%
+  group_by(season, race_city, team) %>%
+      mutate(team = case_when(team == "Audi Sport ABT" ~ "Audi",
+                            team == "e.dams-Renault" ~ "e.Dams-Renault",
+                            TRUE ~ team)) %>%
+  count()
+
+print(top_5_teams_summary)
+
+selected_cities <- c("Mexico City", "Berlin")#Berlin is more staight
+
+selected_cities_data <- top_5_teams_summary %>%
+  filter(race_city %in% selected_cities)
+
+top_teams_selected_cities <- selected_cities_data %>%
+  group_by(team) %>%
+  summarise(total_frequency = sum(n), .groups = "keep") %>%
+  top_n(3, total_frequency)
+
+filtered_data <- selected_cities_data %>%
+  filter(team %in% top_teams_selected_cities$team)
+
+histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, fill = factor(team))) +
+  geom_bar(position = "dodge", stat = "count") +
+  labs(title = "Top Teams' Performance in Selected Cities",
+       x = "Race Track",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_discrete(name = "Team")
+
+print(histogram_top_teams_selected_cities)
+
+mean_frequency_by_season <- top_5_teams_summary %>%
+  group_by(season) %>%
+  summarise(mean_frequency = mean(n), .groups = "keep")
+
+line_plot_mean_frequency <- ggplot(mean_frequency_by_season, aes(x = season, y = mean_frequency)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Mean Frequency of Top 5 Finishes by Season",
+       x = "Season",
+       y = "Mean Frequency") +
+  theme_minimal()
+
+print(line_plot_mean_frequency)
+
+top5_by_city_and_season <- formula_e %>%
+  filter(rank %in% 1:5,race_city %in% c("Mexico City", "Berlin")) %>%
+  group_by(season,race_city,team) %>%
+  summarise(total_top5_count = n(), .groups = "keep") %>%
+  arrange(season,race_city,team)
+
+sum_of_seasons <- formula_e %>%
+  filter(rank %in% 1:5, race_city %in% c("Mexico City", "Berlin")) %>% 
+  group_by(race_city,team) %>%
+  summarise(total_top5_count = sum(rank %in% 1:5), .groups = "keep")
+
+  print(top5_by_city_and_season)
+
+  print(sum_of_seasons)
+  #Berlin - 6, mexico - 5
+
+  
+  top_5_teams_summary <- top_5_teams_summary %>%
+    filter( race_city %in% c("Mexico City", "Berlin"))
+  
+  top_5_mean_totals <- top_5_teams_summary %>%
+    group_by(race_city, team) %>%
+    summarise(total = sum(n)) %>%
+    mutate(mean_total = case_when(race_city == "Berlin" ~ total / 6,
+                                  race_city == "Mexico City" ~ total / 5)) %>%
+    filter(mean_total > 0.2)
+
+
+  top_5_mean_totals %>%
+    ggplot(mapping = aes(x = team, y = mean_total, fill = team)) +
+    geom_bar(stat = "identity")+
+    facet_grid(cols = vars(race_city)) + 
+    coord_flip() 
+    
+
+  print(top_5_mean_totals) 
+ ## print(histogram_top_5_mean_totals)
+ 
+
+
+
+```
+
+```{r Prepare the data required for modeling, message=FALSE, warning=FALSE}
+glimpse(formula_e)
+
+data <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>%
+  mutate(date = ymd(race_date),
+         time_retired = as.numeric(seconds(hms(time_retired))),
+         rank = as.numeric(rank),
+         city = case_when(
+           grepl("Berlin race",race_city) ~ "Berlin",
+           grepl("Diriyah",race_city) ~ "Diriyah",
+           grepl("Hong Kong",race_city) ~ "Hong Kong",
+           grepl("London",race_city) ~ "London",
+           grepl("New York",race_city) ~ "New York",
+           grepl("Montreal",race_city) ~ "Montreal",
+           TRUE ~ race_city),
+         is_top5 = case_when(
+           rank <= 5 ~ "1",
+           TRUE ~ "0"),
+         is_top5 = fct_relevel(is_top5,"1","0"),
+         vaverage_team_rank = vAverage_Team_rank,
+         average_rank = Average_rank
+         ) %>% 
+  select(season,race_num,date,team_group,rank,time_retired,points,city,is_top5,vaverage_team_rank,average_rank)
+
+data <- drop_na(data)
+knitr::kable(head(data,10))
+
+set.seed(2023)
+data_split <- initial_split(data)
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+```{r linear model, message=FALSE, warning=FALSE}
+formula_e_linear_rec <- recipe(time_retired ~ ., data = data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_linear_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+formula_e_linear_wflow <- workflow() %>% 
+  add_model(formula_e_linear_mod) %>% 
+  add_recipe(formula_e_linear_rec)
+
+formula_e_linear_fit <- formula_e_linear_wflow %>% 
+  fit(data = train_data)
+
+tidy(formula_e_linear_fit)
+
+formula_e_linear_pred <- predict(formula_e_linear_fit, test_data) %>% 
+  bind_cols(test_data) 
+
+formula_e_linear_pred
+
+num <- 1:length(formula_e_linear_pred$.pred)
+ggplot(formula_e_linear_pred) + 
+  geom_line(aes(x = num, y = .pred),color = "red")+
+  geom_line(aes(x = num, y = time_retired),color = "green")+
+  labs(title = "Predictions of linear models on the test_data",
+       x = NULL,
+       y = "time_retired")
+
+glance(formula_e_linear_fit)$adj.r.squared
+```
+
+```{r logistic model, message=FALSE, warning=FALSE}
+formula_e_logistic_rec <- recipe(is_top5 ~ ., data = data) %>%
+  step_rm(rank,date,points,city) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_logistic_mod <- logistic_reg() %>% 
+  set_engine("glm")
+
+formula_e_logistic_wflow <- workflow() %>% 
+  add_model(formula_e_logistic_mod) %>% 
+  add_recipe(formula_e_logistic_rec)
+
+formula_e_logistic_fit <- formula_e_logistic_wflow %>% 
+  fit(data = train_data)
+
+knitr::kable(tidy(formula_e_logistic_fit))
+
+formula_e_logistic_pred <- predict(formula_e_logistic_fit, test_data, type = "prob") %>% 
+  bind_cols(test_data) 
+
+formula_e_logistic_pred
+
+formula_e_logistic_pred %>%
+  roc_curve(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  ) %>%
+  autoplot()
+
+formula_e_logistic_pred %>%
+  roc_auc(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  )
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
