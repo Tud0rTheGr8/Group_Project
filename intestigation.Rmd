@@ -81,7 +81,8 @@ formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>%
   mutate(list_of_time = strsplit(gsub(",", "", finish_time), ":")) %>% 
   mutate(finish_hour = 0) %>% 
   mutate(finish_minute = 0) %>% 
-  mutate(finish_second = 0.00) %>% 
+  mutate(finish_second = 0.0) %>% 
+  mutate(second_behind = 0.0) %>%
   mutate(total_second = 0.0) %>% 
   arrange(race_date)
 ```
@@ -114,17 +115,43 @@ while (i <= nrow(formula_e_time)){
     buffer_hour <- formula_e_time[i,7] 
     buffer_minute <- formula_e_time[i,8] 
     buffer_second <- formula_e_time[i,9] 
-    formula_e_time[i,10] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
+    formula_e_time[i,11] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
   }else{
-    formula_e_time[i,10] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
+    formula_e_time[i,10] <- 3600*formula_e_time[i,7] + 60*formula_e_time[i,8] + formula_e_time[i,9]
+    formula_e_time[i,11] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
   }
   i <- i+1
 }
 ```
 
+
 ```{r joining result to formula_e_tidy}
-formula_e_time <- select(formula_e_time, id, total_second)
+formula_e_time <- select(formula_e_time, id, second_behind, total_second)
 formula_e_tidy = inner_join(formula_e_tidy, formula_e_time, by = "id")
+```
+
+```{r}
+a <- formula_e_tidy %>%
+  group_by(race_date) %>% 
+  summarise(avg_sec_b = mean(second_behind), 
+            med_sec_b = median(second_behind), 
+            sd_sec_b = sd(second_behind), 
+            min_sec = min(total_second), 
+            avg_sec = mean(total_second), 
+            med_sec = median(total_second), 
+            max_sec = max(total_second))
+
+race_statistics <- count(formula_e_tidy, race_date) 
+race_statistics <- left_join(race_statistics, a, by = "race_date")
+```
+
+```{r investigations about time distribution}
+ggplot(race_statistics, 
+       aes(x = race_date, 
+           y = sd_sec_b, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y~x")
 ```
 
 ```{r calculate average rank}
