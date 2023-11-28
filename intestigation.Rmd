@@ -148,7 +148,19 @@ race_statistics <- left_join(race_statistics, a, by = "race_date")
 ```{r investigations about time distribution}
 ggplot(race_statistics, 
        aes(x = race_date, 
+           y = avg_sec)) + 
+  geom_point()
+
+ggplot(race_statistics, 
+       aes(x = race_date, 
            y = sd_sec_b, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y~x")
+
+ggplot(race_statistics, 
+       aes(x = race_date, 
+           y = sd_sec_b / avg_sec, 
            colour = avg_sec_b)) + 
   geom_point() + 
   geom_smooth(method = "lm", formula = "y~x")
