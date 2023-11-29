@@ -49,7 +49,7 @@ We used the Formula E Championship dataset (referenced at the end of the documen
 
 ## Findings
 
-We started of by tidying the data, creating a new variable called race_city which only included the name of the city the race took place in. We used this variable as a stand-in for the race track (which wasn't included in the dataset) under the assumption that all races in the same city would take place on the same track.
+We started off by tidying the data, creating a new variable called race_city which only included the name of the city the race took place in. We used this variable as a stand-in for the race track (which wasn't included in the dataset) under the assumption that all races in the same city would take place on the same track.
 
 The first step in our analysis was to create a graph showcasing the evolution of rank 1 times over the seasons in a few selected cities, which had the largest number of races in order to have as many data points as possible. We decided to plot separate lines for separate cities as the different lengths of different tracks may lead to false conclusions if they were all considered together. In order to do this, we had to modify the time_retired variable to a standard hms (lubridate) format and then into seconds, as the data for the rank 1 times was in a variety of different formats.
 
@@ -83,8 +83,255 @@ formula_e_rank1_mini %>%
        y = "Time (s)",
        color = "Race City")
   
+```
+
+The lines of best fit seem to indicate that the rank 1 times decrease as expected (except for Mexico City), but on closer inspection it can be seen that the times increase on average in seasons 1-4, then drop drastically for seasons 5 and 6. The exceptions to this are Mexico City and Marrakesh. In season 5, the time for the Mexico City race increases drastically, resulting in the positive slope line of best fit. The Marrakesh races have pretty consistent rank 1 times which seem to slowly decrease as expected, but since there are only 3 races to go by there is a high level of uncertainty associated with this trend. 
+
+In order to obtain some more conclusive results, we decided to utilise all of the race times, rather than just the rank 1 times. This required even more data tidying as the times for every rank below rank 1 were defined in terms of the rank 1 time (for example +1.022s). Additionally, inconsistencies in the way the times were formatted resulted in more work that needed to be done to tidy the data. As such we had to manually modify times with unusual formats. 
+
+After all of the times were converted into seconds, we plotted a graph relating the mean time taken to complete a race against the date of the race and compared the results against the plot for the rank 1 times. We also decided to plot a few other statistics, but this didn't result in any useful conclusions due to very high uncertainty values.
+
+
+```{r tidy retired_time, echo=FALSE}
+formula_e_tidy<- formula_e %>% 
+  filter(rank != "DSQ") %>%
+  filter(rank != "NC") %>%
+  filter(nchar(time_retired) >= 4) %>% 
+  filter(grepl("a", time_retired) == FALSE) %>% 
+  filter(str_detect(time_retired, "^[[:alpha:]]") == FALSE) %>% 
+  mutate(race_date = ymd(race_date)) %>% 
+  arrange(race_date)
+
+formula_e_tidy$id <- c(1:nrow(formula_e_tidy))
+
+formula_e_tidy[311,13] <- "56:27.535"
+formula_e_tidy[323,13] <- "+1:01.365"
+formula_e_tidy[324,13] <- "+1:09.646"
+formula_e_tidy[471,13] <- "+39.137"
+formula_e_tidy[472,13] <- "+55.189"
+formula_e_tidy[548,13] <- "+1:13.880"
+formula_e_tidy[549,13] <- "+1:31.382"
+formula_e_tidy[662,13] <- "47:02.511"
+formula_e_tidy[835,13] <- "+1:27.00912"
+```
+```{r create object for time calculation, echo=FALSE}
+formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>% 
+  mutate(tidying_time = gsub("s", "", time_retired, fixed=TRUE)) %>% 
+  mutate(finish_time = gsub(" ", "", tidying_time)) %>% 
+  mutate(list_of_time = strsplit(gsub(",", "", finish_time), ":")) %>% 
+  mutate(finish_hour = 0) %>% 
+  mutate(finish_minute = 0) %>% 
+  mutate(finish_second = 0.0) %>% 
+  mutate(second_behind = 0.0) %>%
+  mutate(total_second = 0.0) %>% 
+  arrange(race_date)
+```
+```{r calculation, echo=FALSE}
+i <- 1
+while (i <= nrow(formula_e_time)){
+  formula_e_time[i,7] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,8] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,9] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.double(formula_e_time[i,6][[1]][3]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.double(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 1 ~ as.double(formula_e_time[i,6][[1]][1]))
+  i <- i+1
+}
+
+bufferdate <- 0
+buffer_hour <- 0
+buffer_minute <- 0
+buffer_second <- 0
+i <- 1
+while (i <= nrow(formula_e_time)){
+  if (bufferdate != formula_e_time[i,1]){
+    bufferdate <- formula_e_time[i,1] 
+    buffer_hour <- formula_e_time[i,7] 
+    buffer_minute <- formula_e_time[i,8] 
+    buffer_second <- formula_e_time[i,9] 
+    formula_e_time[i,11] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
+  }else{
+    formula_e_time[i,10] <- 3600*formula_e_time[i,7] + 60*formula_e_time[i,8] + formula_e_time[i,9]
+    formula_e_time[i,11] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
+  }
+  i <- i+1
+}
+```
+```{r joining result to formula_e_tidy, echo=FALSE}
+formula_e_time <- select(formula_e_time, id, second_behind, total_second)
+formula_e_tidy = inner_join(formula_e_tidy, formula_e_time, by = "id")
+```
+```{r, echo=FALSE}
+a <- formula_e_tidy %>%
+  group_by(race_date) %>% 
+  summarise(avg_sec_b = mean(second_behind), 
+            med_sec_b = median(second_behind), 
+            sd_sec_b = sd(second_behind), 
+            min_sec = min(total_second), 
+            avg_sec = mean(total_second), 
+            med_sec = median(total_second), 
+            max_sec = max(total_second))
+
+race_statistics <- count(formula_e_tidy, race_date) 
+race_statistics <- left_join(race_statistics, a, by = "race_date")
+```
+```{r investigations about time distribution, echo =FALSE, warning=FALSE}
+ggplot(race_statistics, 
+       aes(x = race_date, 
+           y = avg_sec, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "glm", formula = "y ~ x") +
+  labs(x = "Date", 
+       y = "Mean Time to Finish the Race (s)", 
+       colour = "Mean Time Other Drivers
+Left Behind (s)")
+
+ggplot(race_statistics, 
+       aes(x = avg_sec, 
+           y = sd_sec_b, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y ~ x") + 
+  labs(x = "Mean Time to Finish the Race (s)", 
+       y = "Standard Difference of Time Cost", 
+       colour = "Mean Time Other Drivers
+Left behind (s)")
+
+ggplot(race_statistics, 
+       aes(x = avg_sec_b, 
+           y = sd_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y ~ x") + 
+  labs(x = "mean time other drivers left behind (in second)", 
+       y = "standard difference of time cost")
+
+ggplot(race_statistics, 
+       aes(x = race_date, 
+           y = sd_sec_b, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y~x") + 
+  labs(x = "date", 
+       y = "standard difference of time cost", 
+       colour = "mean time other drivers
+left behind (in second)")
+```
+
+As we can see from the first graph, the mean time taken to finish a race seems to increase, before dropping off suddenly towards the end, and remaining fairly consistent. These findings seem to match up with the findings from the rank 1 times plot. It's also important to note that the slope on this graph is once again affected by large values at the threshold before the average times drop. Additionally, it is worth noting that these graphs do not separate the times by the city in which the race took place, so this would be a possible point of further research, which may yield new results.
+
+Another area which we wanted to conduct research in was whether different teams build their cars differently and how this would affect their probability of achieving a high rank on certain tracks. For example, if a team performs better on tracks with many long straight lines than on tracks with many turns, then it may suggest that this team builds cars with high top speed and acceleration in a straight line, but poorer maneuverability. 
+
+In order to do this, we selected two cities, Berlin and Mexico City, which had a larger number of races. Berlin is the straighter track with only 10 corners, whereas Mexico has 16. We then only selected the top 5 ranks for each race. The frequency that each team came up in the top 5 for each race was calculated and then divided by the number of races in each city to give the proportion of the races where that team ranked in the top 5, thus giving us a metric for the probability that a certain team will perform well on a certain track. Only teams that reached top 5 more than 20% of the time in either race were included in order to reduce clutter. Below we can see the resulting bar plot.
+
+
+```{r top 5 frequency, echo=FALSE, warning=FALSE, message=FALSE}
+
+formula_e_with_nrank <- formula_e %>%
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank = as.numeric(rank)) 
+
+top_5_teams <- formula_e_with_nrank %>%
+  filter(nrank <= 5) %>%
+  select(season, race_city, team, nrank) %>%
+  arrange(season, race_city, nrank)
+
+top_5_teams_summary <- top_5_teams %>%
+  group_by(season, race_city, team) %>%
+      mutate(team = case_when(team == "Audi Sport ABT" ~ "Audi",
+                            team == "e.dams-Renault" ~ "e.Dams-Renault",
+                            TRUE ~ team)) %>%
+  count()
+
+#print(top_5_teams_summary)
+
+selected_cities <- c("Mexico City", "Berlin")#Berlin is more staight
+
+selected_cities_data <- top_5_teams_summary %>%
+  filter(race_city %in% selected_cities)
+
+top_teams_selected_cities <- selected_cities_data %>%
+  group_by(team) %>%
+  summarise(total_frequency = sum(n), .groups = "keep") %>%
+  top_n(3, total_frequency)
+
+filtered_data <- selected_cities_data %>%
+  filter(team %in% top_teams_selected_cities$team)
+
+histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, fill = factor(team))) +
+  geom_bar(position = "dodge", stat = "count") +
+  labs(title = "Top Teams' Performance in Selected Cities",
+       x = "Race Track",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_discrete(name = "Team")
+
+#print(histogram_top_teams_selected_cities)
+
+mean_frequency_by_season <- top_5_teams_summary %>%
+  group_by(season) %>%
+  summarise(mean_frequency = mean(n), .groups = "keep")
+
+line_plot_mean_frequency <- ggplot(mean_frequency_by_season, aes(x = season, y = mean_frequency)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Mean Frequency of Top 5 Finishes by Season",
+       x = "Season",
+       y = "Mean Frequency") +
+  theme_minimal()
+
+#print(line_plot_mean_frequency)
+
+top5_by_city_and_season <- formula_e %>%
+  filter(rank %in% 1:5,race_city %in% c("Mexico City", "Berlin")) %>%
+  group_by(season,race_city,team) %>%
+  summarise(total_top5_count = n(), .groups = "keep") %>%
+  arrange(season,race_city,team)
+
+sum_of_seasons <- formula_e %>%
+  filter(rank %in% 1:5, race_city %in% c("Mexico City", "Berlin")) %>% 
+  group_by(race_city,team) %>%
+  summarise(total_top5_count = sum(rank %in% 1:5), .groups = "keep")
+
+  #print(top5_by_city_and_season)
+
+  #print(sum_of_seasons)
+  #Berlin - 6, mexico - 5
+
+  
+  top_5_teams_summary <- top_5_teams_summary %>%
+    filter( race_city %in% c("Mexico City", "Berlin"))
+  
+  top_5_mean_totals <- top_5_teams_summary %>%
+    group_by(race_city, team) %>%
+    summarise(total = sum(n)) %>%
+    mutate(mean_total = case_when(race_city == "Berlin" ~ total / 6,
+                                  race_city == "Mexico City" ~ total / 5)) %>%
+    filter(mean_total > 0.2)
+
+#print(top_5_mean_totals) 
+  
+  top_5_mean_totals %>%
+    ggplot(mapping = aes(x = team, y = mean_total, fill = team)) +
+    geom_bar(stat = "identity")+
+    facet_grid(cols = vars(race_city)) + 
+    coord_flip() +
+    labs(
+         x = "Proportion of races where top 5 rank was achieved",
+         y = "Team") + 
+    guides(fill = "none")
+    
 
 ```
+
+As expected, due to the large number of restrictions on specifications of cars, teams that performed well in one of the races, also tended to perform well in the other race. However, it is worth noting that teams like Andretti BMW, Jaguar and Techeetah Renault performed well in Mexico City, but never placed top 5 in Berlin and, vice versa, Mahindra, which performed well in Berlin, never reached top 5 in Mexico. This may suggest that the cars made by teams like Jaguar are built to perform better in races where maneuverability is more important. However, it is also important to note there is no reference to the ability of the drivers or how well they know certain tracks due to factors such as nationality. Additionally, this analysis assumes that the drivers for each team, as well as the team strategy in regards to how the cars are built have remained the same over the seasons. A possible area of further study could be an analysis of the performance of different drivers on different tracks.
+
+
 
 ## References
 
