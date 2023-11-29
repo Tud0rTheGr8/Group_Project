@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r load-lib, include = FALSE}
 library(tidyverse)
+library(lubridate)
 # Add any other libraries here
 
 
@@ -31,7 +32,7 @@ formula_e <- read.csv("data/formula_e_race_results.csv")
 
 ## Research Question
 
-Describe your research question here. Include why this question might be of interest. 
+How do average race completion times vary over time and what factors affect the rank achieved by race drivers? This information could be used to 
 
 
 
@@ -73,6 +74,10 @@ Make sure to hide your code with  `echo = FALSE` unless the point you are trying
 
 ## References
 
-List any references here. You should, at a minimum, list your data source.
+Dataset: 
 
+MLandry, 2020, Formula E Championship, Electronic Dataset, Kaggle.com, <20, Oct, 2023: https://www.kaggle.com/datasets/mlandry/formula-e-championship>
 
+References: 
+
+Wikipedia, 2023, List of Formula E ePrix, Wikipedia, <26, Nov, 2023: https://en.wikipedia.org/wiki/List_of_Formula_E_ePrix>
