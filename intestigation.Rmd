@@ -161,10 +161,19 @@ ggplot(race_statistics,
            y = sd_sec_b, 
            colour = avg_sec_b)) + 
   geom_point() + 
+  geom_smooth(method = "lm", formula = "y ~ x") + 
   labs(x = "mean time to finish the race (in second)", 
        y = "standard difference of time cost", 
        colour = "mean time other drivers
 left behind (in second)")
+
+ggplot(race_statistics, 
+       aes(x = avg_sec_b, 
+           y = sd_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = "y ~ x") + 
+  labs(x = "mean time other drivers left behind (in second)", 
+       y = "standard difference of time cost")
 
 ggplot(race_statistics, 
        aes(x = race_date, 
