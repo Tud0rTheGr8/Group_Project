@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="by Team-Name: User1, User2, User3, User4 &amp; User5" />
+<meta name="author" content="by Team-Name: Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun" />
 
-<meta name="date" content="2023-10-20" />
+<meta name="date" content="2023-11-29" />
 
-<title>Project title</title>
+<title>An Analysis of factors that affect race completion times and probability of winning in Formula E</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,57 +350,61 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Project title</h1>
-<h4 class="author">by Team-Name: User1, User2, User3, User4 &amp;
-User5</h4>
-<h4 class="date">2023-10-20</h4>
+<h1 class="title toc-ignore">An Analysis of factors that affect race
+completion times and probability of winning in Formula E</h1>
+<h4 class="author">by Team-Name: Tudor Cucu, Binxi Yang, Jiacheng Zhang,
+Mengchuan Sun</h4>
+<h4 class="date">2023-11-29</h4>
 
 </div>
 
 
 <div id="research-question" class="section level2">
 <h2>Research Question</h2>
-<p>Describe your research question here. Include why this question might
-be of interest.</p>
+<p>How do average race completion times vary over time and what factors
+affect the rank achieved by race drivers? This information could be used
+to predict which teams are more likely to win certain races and gain
+insights into how some teams build their cars.</p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
-<p>Briefly describe your dataset here - include a description of the key
-variables you will be investigating. Include a citation for your data.
-See <a href="http://libraryguides.vu.edu.au/c.php?g=386501&amp;p=4347840" class="uri">http://libraryguides.vu.edu.au/c.php?g=386501&amp;p=4347840</a>
-for guidance on proper citation for datasets. If you got your data off
-the web, make sure to state the retrieval date.</p>
+<p>We used the Formula E Championship dataset (referenced at the end of
+the document). This dataset was derived from Wikipedia race reports by
+the author. As such, there were various inconsistencies within the data,
+especially with regards to the time_retired variable. The main variables
+of interest for our investigation were the time_retired (detailing the
+time taken to complete the race), team, race_name (including the city in
+which the race took place as well as the year) and rank variables.</p>
 </div>
 <div id="findings" class="section level2">
 <h2>Findings</h2>
-<p>The write-up of your project and findings go here.</p>
-<p>Think of this as the text of your presentation with some extra detail
-to cover what there was not time to discuss in the presentation. This
-might include any assumptions you made when doing your analysis, any
-limitations of the work you have done or any ideas you have for future
-work. Feel free to split this section into subsections to make it easier
-to read.</p>
-<p>The length should be roughly 1,500 words. If you want to use a word
-count addin, you can install this by copying and pasting the following
-into RStudio:</p>
-<p><code>devtools::install_github(&quot;benmarwick/wordcountaddin&quot;, type = &quot;source&quot;, dependencies = TRUE)</code></p>
-<p>You will then need to restart RStudio. Once you have done that,
-select the text you want to count the words of, go to Addins, and select
-the <code>Word count</code> addin. This addin counts words using two
-different algorithms, but the results should be similar and as long as
-you’re in the ballpark of 1,500 words, you’re good! The addin will
-ignore code chunks and only count the words in prose. If you don’t want
-to use the addin you can always copy and paste the text into Microsoft
-Word to do a Word Count!</p>
-<p>You can also load your data here and present any analysis results /
-plots. Make sure to hide your code with <code>echo = FALSE</code> unless
-the point you are trying to make is about the code itself, in which case
-you should show your code.</p>
+<p>We started of by tidying the data, creating a new variable called
+race_city which only included the name of the city the race took place
+in. We used this variable as a stand-in for the race track (which wasn’t
+included in the dataset) under the assumption that all races in the same
+city would take place on the same track.</p>
+<p>The first step in our analysis was to create a graph showcasing the
+evolution of rank 1 times over the seasons in a few selected cities,
+which had the largest number of races in order to have as many data
+points as possible. We decided to plot separate lines for separate
+cities as the different lengths of different tracks may lead to false
+conclusions if they were all considered together. In order to do this,
+we had to modify the time_retired variable to a standard hms (from
+lubridate) format and then into seconds, as the data for the rank 1
+times was in a variety of different formats.</p>
+<p>Our expectations were that rank 1 times would go down over the
+seasons as the drivers gain more experience with the tracks and as the
+technology in the cars advances. The plot for the following cities:
+Berlin, Marrakesh, Mexico City and Paris can be seen below.</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<p>List any references here. You should, at a minimum, list your data
-source.</p>
+<p>Dataset:</p>
+<p>MLandry, 2020, Formula E Championship, Electronic Dataset,
+Kaggle.com, &lt;20, Oct, 2023: <a href="https://www.kaggle.com/datasets/mlandry/formula-e-championship" class="uri">https://www.kaggle.com/datasets/mlandry/formula-e-championship</a>&gt;</p>
+<p>References:</p>
+<p>Wikipedia, 2023, List of Formula E ePrix, Wikipedia, &lt;26, Nov,
+2023: <a href="https://en.wikipedia.org/wiki/List_of_Formula_E_ePrix" class="uri">https://en.wikipedia.org/wiki/List_of_Formula_E_ePrix</a>&gt;</p>
 </div>
 
 
