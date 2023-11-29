@@ -416,6 +416,7 @@ formula_e_logistic_pred %>%
     .pred_0,
     event_level = "second"
   )
+
 ```
 
 

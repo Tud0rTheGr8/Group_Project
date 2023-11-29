@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load-lib, include = FALSE}
 library(tidyverse)
 library(lubridate)
+library(tidymodels)
 # Add any other libraries here
 
 
@@ -331,7 +332,136 @@ sum_of_seasons <- formula_e %>%
 
 As expected, due to the large number of restrictions on specifications of cars, teams that performed well in one of the races, also tended to perform well in the other race. However, it is worth noting that teams like Andretti BMW, Jaguar and Techeetah Renault performed well in Mexico City, but never placed top 5 in Berlin and, vice versa, Mahindra, which performed well in Berlin, never reached top 5 in Mexico. This may suggest that the cars made by teams like Jaguar are built to perform better in races where maneuverability is more important. However, it is also important to note there is no reference to the ability of the drivers or how well they know certain tracks due to factors such as nationality. Additionally, this analysis assumes that the drivers for each team, as well as the team strategy in regards to how the cars are built have remained the same over the seasons. A possible area of further study could be an analysis of the performance of different drivers on different tracks.
 
+Finally, we decided to build two different models, each investigating one of the two main areas where we conducted our research. The first model predicts the time_retired variable in terms of all the other variables. Firstly, the dataset was split in  3:1 ratio between a training and testing set. The predictions from the model were then plotted against the values from the testing dataset and an r squared value was calculated. Below, we can see the plot of the predicted vs actual times and the r-squared value of the model. The red line is the model-predicted times and the green line represents the actual times.
 
+```{r calculate average rank, include=FALSE}
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(team, nrank) %>% 
+  group_by(team) %>% 
+  summarise(vAverage_Team_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "team")
+
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(driver, nrank) %>% 
+  group_by(driver) %>% 
+  summarise(Average_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "driver")
+```
+
+```{r Prepare the data required for modeling, message=FALSE, warning=FALSE, include=FALSE}
+glimpse(formula_e)
+
+data <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>%
+  mutate(date = ymd(race_date),
+         time_retired = as.numeric(seconds(hms(time_retired))),
+         rank = as.numeric(rank),
+         city = case_when(
+           grepl("Berlin race",race_city) ~ "Berlin",
+           grepl("Diriyah",race_city) ~ "Diriyah",
+           grepl("Hong Kong",race_city) ~ "Hong Kong",
+           grepl("London",race_city) ~ "London",
+           grepl("New York",race_city) ~ "New York",
+           grepl("Montreal",race_city) ~ "Montreal",
+           TRUE ~ race_city),
+         is_top5 = case_when(
+           rank <= 5 ~ "1",
+           TRUE ~ "0"),
+         is_top5 = fct_relevel(is_top5,"1","0"),
+         vaverage_team_rank = vAverage_Team_rank,
+         average_rank = Average_rank
+         ) %>% 
+  select(season,race_num,date,team_group,rank,time_retired,points,city,is_top5,vaverage_team_rank,average_rank)
+
+data <- drop_na(data)
+knitr::kable(head(data,10))
+
+set.seed(2023)
+data_split <- initial_split(data)
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+```{r linear model, message=FALSE, warning=FALSE, echo=FALSE}
+formula_e_linear_rec <- recipe(time_retired ~ ., data = data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_linear_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+formula_e_linear_wflow <- workflow() %>% 
+  add_model(formula_e_linear_mod) %>% 
+  add_recipe(formula_e_linear_rec)
+
+formula_e_linear_fit <- formula_e_linear_wflow %>% 
+  fit(data = train_data)
+
+#tidy(formula_e_linear_fit)
+
+formula_e_linear_pred <- predict(formula_e_linear_fit, test_data) %>% 
+  bind_cols(test_data) 
+
+#formula_e_linear_pred
+
+num <- 1:length(formula_e_linear_pred$.pred)
+ggplot(formula_e_linear_pred) + 
+  geom_line(aes(x = num, y = .pred),color = "red")+
+  geom_line(aes(x = num, y = time_retired),color = "green")+
+  labs(title = "Predictions of linear models on the test_data",
+       x = NULL,
+       y = "Time Retired")
+
+glance(formula_e_linear_fit)$adj.r.squared
+```
+
+As we can see from the graph, the model seems to predict the actual times quite well. Additionally, the relatively high r-squared value suggests that a high proportion of the variance is explained by the model. However, the model can still be improved.
+
+The second model attempts to predict whether or not a driver will make it in the top 5 in a particular race.
+This model predicts this binary outcome in terms of all variables except rank, date, points and city. As before, the model was trained on the training dataset and tested on the testing dataset to avoid overplotting. Below we can see the ROC curve and the area under it.
+
+```{r logistic model, message=FALSE, warning=FALSE, echo=FALSE}
+formula_e_logistic_rec <- recipe(is_top5 ~ ., data = data) %>%
+  step_rm(rank,date,points,city) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_logistic_mod <- logistic_reg() %>% 
+  set_engine("glm")
+
+formula_e_logistic_wflow <- workflow() %>% 
+  add_model(formula_e_logistic_mod) %>% 
+  add_recipe(formula_e_logistic_rec)
+
+formula_e_logistic_fit <- formula_e_logistic_wflow %>% 
+  fit(data = train_data)
+
+#knitr::kable(tidy(formula_e_logistic_fit))
+
+formula_e_logistic_pred <- predict(formula_e_logistic_fit, test_data, type = "prob") %>% 
+  bind_cols(test_data) 
+
+#formula_e_logistic_pred
+
+formula_e_logistic_pred %>%
+  roc_curve(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  ) %>%
+  autoplot()
+
+formula_e_logistic_pred %>%
+  roc_auc(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  )
+
+```
+
+The ROC graph indicates that this model is quite effective, with an AUC value of 0.904. 
 
 ## References
 
