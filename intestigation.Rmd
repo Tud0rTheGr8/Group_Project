@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r load-lib, message = FALSE}
 library(tidyverse)
+library(tidymodels)
 library(lubridate)
 ```
 
@@ -311,10 +312,110 @@ sum_of_seasons <- formula_e %>%
 
   print(top_5_mean_totals) 
  ## print(histogram_top_5_mean_totals)
- 
+```
 
+```{r Prepare the data required for modeling, message=FALSE, warning=FALSE}
+glimpse(formula_e)
 
+data <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>%
+  mutate(date = ymd(race_date),
+         time_retired = as.numeric(seconds(hms(time_retired))),
+         rank = as.numeric(rank),
+         city = case_when(
+           grepl("Berlin race",race_city) ~ "Berlin",
+           grepl("Diriyah",race_city) ~ "Diriyah",
+           grepl("Hong Kong",race_city) ~ "Hong Kong",
+           grepl("London",race_city) ~ "London",
+           grepl("New York",race_city) ~ "New York",
+           grepl("Montreal",race_city) ~ "Montreal",
+           TRUE ~ race_city),
+         is_top5 = case_when(
+           rank <= 5 ~ "1",
+           TRUE ~ "0"),
+         is_top5 = fct_relevel(is_top5,"1","0"),
+         vaverage_team_rank = vAverage_Team_rank,
+         average_rank = Average_rank
+         ) %>% 
+  select(season,race_num,date,team_group,rank,time_retired,points,city,is_top5,vaverage_team_rank,average_rank)
 
+data <- drop_na(data)
+knitr::kable(head(data,10))
+
+set.seed(2023)
+data_split <- initial_split(data)
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+```{r linear model, message=FALSE, warning=FALSE}
+formula_e_linear_rec <- recipe(time_retired ~ ., data = data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_linear_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+formula_e_linear_wflow <- workflow() %>% 
+  add_model(formula_e_linear_mod) %>% 
+  add_recipe(formula_e_linear_rec)
+
+formula_e_linear_fit <- formula_e_linear_wflow %>% 
+  fit(data = train_data)
+
+tidy(formula_e_linear_fit)
+
+formula_e_linear_pred <- predict(formula_e_linear_fit, test_data) %>% 
+  bind_cols(test_data) 
+
+formula_e_linear_pred
+
+num <- 1:length(formula_e_linear_pred$.pred)
+ggplot(formula_e_linear_pred) + 
+  geom_line(aes(x = num, y = .pred),color = "red")+
+  geom_line(aes(x = num, y = time_retired),color = "green")+
+  labs(title = "Predictions of linear models on the test_data",
+       x = NULL,
+       y = "time_retired")
+
+glance(formula_e_linear_fit)$adj.r.squared
+```
+
+```{r logistic model, message=FALSE, warning=FALSE}
+formula_e_logistic_rec <- recipe(is_top5 ~ ., data = data) %>%
+  step_rm(rank,date,points,city) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_logistic_mod <- logistic_reg() %>% 
+  set_engine("glm")
+
+formula_e_logistic_wflow <- workflow() %>% 
+  add_model(formula_e_logistic_mod) %>% 
+  add_recipe(formula_e_logistic_rec)
+
+formula_e_logistic_fit <- formula_e_logistic_wflow %>% 
+  fit(data = train_data)
+
+knitr::kable(tidy(formula_e_logistic_fit))
+
+formula_e_logistic_pred <- predict(formula_e_logistic_fit, test_data, type = "prob") %>% 
+  bind_cols(test_data) 
+
+formula_e_logistic_pred
+
+formula_e_logistic_pred %>%
+  roc_curve(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  ) %>%
+  autoplot()
+
+formula_e_logistic_pred %>%
+  roc_auc(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  )
 ```
 
 
