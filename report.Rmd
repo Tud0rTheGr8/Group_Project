@@ -55,7 +55,7 @@ The first step in our analysis was to create a graph showcasing the evolution of
 
 Our expectations were that rank 1 times would go down over the seasons as the drivers gain more experience with the tracks and as the technology in the cars advances. The plot for the following cities: Berlin, Marrakesh, Mexico City and Paris can be seen below. 
 
-```{r choose rank 1 data, message=FALSE, warning=FALSE}
+```{r choose rank 1 data, message=FALSE, warning=FALSE, echo=FALSE}
 formula_e_rank1 <- filter(formula_e, rank==1) %>%
   select(., season, race_city, time_retired) %>% arrange(season) %>%
   mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0("0:", time_retired),
