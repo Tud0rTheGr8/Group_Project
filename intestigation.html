@@ -368,7 +368,17 @@ creating your presentation and report easier. Please note that you
 project.</p>
 <pre class="r"><code>library(tidyverse)
 library(tidymodels)</code></pre>
-<pre><code>## Warning: package &#39;tidymodels&#39; was built under R version 4.3.2</code></pre>
+<pre><code>## Warning: 程辑包&#39;tidymodels&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;dials&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;infer&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;modeldata&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;parsnip&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;recipes&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;rsample&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;tune&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;workflows&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;workflowsets&#39;是用R版本4.3.2 来建造的</code></pre>
+<pre><code>## Warning: 程辑包&#39;yardstick&#39;是用R版本4.3.2 来建造的</code></pre>
 <pre class="r"><code>library(lubridate)</code></pre>
 <pre class="r"><code># load your data 
 formula_e &lt;- read.csv(&quot;data/formula_e_race_results.csv&quot;)
@@ -6579,11 +6589,11 @@ left behind (in second)&quot;)</code></pre>
 <pre><code>## Warning: There was 1 warning in `filter()`.
 ## ℹ In argument: `is.numeric(as.numeric(rank))`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
 ## ℹ In argument: `nrank = as.numeric(rank)`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre class="r"><code>formula_e &lt;- left_join(formula_e, formu, by = &quot;team&quot;)
 
 formu &lt;- formula_e %&gt;% 
@@ -6595,11 +6605,11 @@ formu &lt;- formula_e %&gt;%
 <pre><code>## Warning: There was 1 warning in `filter()`.
 ## ℹ In argument: `is.numeric(as.numeric(rank))`.
 ## Caused by warning:
-## ! NAs introduced by coercion
+## ! 强制改变过程中产生了NA
 ## There was 1 warning in `mutate()`.
 ## ℹ In argument: `nrank = as.numeric(rank)`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre class="r"><code>formula_e &lt;- left_join(formula_e, formu, by = &quot;driver&quot;)</code></pre>
 <pre class="r"><code>formula_e_rank1_mini %&gt;%
   ggplot(mapping = aes(x = season, y = time_retired, color = race_city, group_by=race_city)) +
@@ -6615,11 +6625,11 @@ Average time distribution ##ybx: Modelling</p>
 <pre><code>## Warning: There was 1 warning in `filter()`.
 ## ℹ In argument: `is.numeric(as.numeric(rank))`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
 ## ℹ In argument: `nrank = as.numeric(rank)`.
 ## Caused by warning:
-## ! NAs introduced by coercion</code></pre>
+## ! 强制改变过程中产生了NA</code></pre>
 <pre class="r"><code>top_5_teams &lt;- formula_e_with_nrank %&gt;%
   filter(nrank &lt;= 5) %&gt;%
   select(season, race_city, team, nrank) %&gt;%

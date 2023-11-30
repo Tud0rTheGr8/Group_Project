@@ -238,6 +238,9 @@ top_5_teams_summary <- top_5_teams %>%
 
 print(top_5_teams_summary)
 
+```
+
+```{r histogram_top_teams_selected_cities}
 selected_cities <- c("Mexico City", "Berlin")#Berlin is more staight
 
 selected_cities_data <- top_5_teams_summary %>%
@@ -261,6 +264,9 @@ histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, 
 
 print(histogram_top_teams_selected_cities)
 
+```
+
+```{r line_plot_mean_frequency}
 mean_frequency_by_season <- top_5_teams_summary %>%
   group_by(season) %>%
   summarise(mean_frequency = mean(n), .groups = "keep")
@@ -274,6 +280,10 @@ line_plot_mean_frequency <- ggplot(mean_frequency_by_season, aes(x = season, y =
   theme_minimal()
 
 print(line_plot_mean_frequency)
+
+```
+
+```{r top_5_mean_totals}
 
 top5_by_city_and_season <- formula_e %>%
   filter(rank %in% 1:5,race_city %in% c("Mexico City", "Berlin")) %>%
