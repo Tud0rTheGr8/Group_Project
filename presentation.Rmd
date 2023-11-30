@@ -89,7 +89,7 @@ the year) <br>
 
 class: inverse, middle, center
 
-# Investigate
+# Investigation
 
 ---
 
@@ -120,7 +120,7 @@ We assume that rank 1 times would go down over the seasons <br> as the drivers g
 
 # Graph of selected cities
 
-```{r choose rank 1 data, message=FALSE, warning=FALSE, echo=FALSE}
+```{r choose rank 1 data, message=FALSE, warning=FALSE, echo=FALSE, out.height = "70%"}
 formula_e_rank1 <- filter(formula_e, rank==1) %>%
   select(., season, race_city, time_retired) %>% arrange(season) %>%
   mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0("0:", time_retired),
@@ -272,11 +272,16 @@ Left Behind (s)")
 ```
 ---
 
+class: middle
+
 # Are Cars Different?
 
 We wanted to conduct research in was whether different teams build their cars differently and how this would affect their probability of achieving a high rank on certain tracks.
 
 ---
+
+class: middle
+
 # Our Prediction
 
 If a team performs better on tracks with many long straight lines than on tracks with many turns, then it may suggest that this team builds cars with high top speed and acceleration in a straight line, but poorer maneuverability
