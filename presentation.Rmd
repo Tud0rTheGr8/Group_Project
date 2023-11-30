@@ -1,7 +1,6 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "An Analysis of factors that affect <br> race completion times and probability <br> of winning in Formula E"
+author: "Team name <br> Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun"
 institute: "University of Edinburgh"
 date: "29 Nov 2023`"
 output:
@@ -39,177 +38,503 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
-
+formula_e <- read.csv("data/formula_e_race_results.csv")
+formula_e <- formula_e %>% mutate(race_city = substring(race_name,6))
+formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date)
 ```
 
 ```{r include=FALSE}
 
 #Background image
 style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
+  title_slide_text_color = "white", 
+  title_slide_background_image = "img/formula_e.png"
 )
 ```
 
-class: center, middle
+class: center
 
-## A statement of the overall goal / research question
-
+- How do average race completion times vary over time?
+- What factors affect the rank achieved by race drivers?
+- To predict which teams are more likely to win certain races.
+- To gain insights into how some teams build their cars.
 ---
 
 class: inverse, center, middle
 
-# Section title
+# Data Source
 
 ---
 
-# Hello World
+# Formula E Championship dataset $^*$
 
-- Click the `Knit` button to compile your presentation
+.pull-left[
+The main variables of interest for our investigation: 
+]
+.pull-right[
+- time_retired (detailing the time taken to complete the race) <br>
+- team <br>
+- race_name (including the city in which the race took place as well as
+the year) <br>
+- rank
+]
 
-- Make sure to commit and push all resulting files to your GitHub repo
-
+.footnote[
+[*] Reference at the last slide
+]
 ---
 
 class: inverse, middle, center
 
-# Using xaringan
+# Investigate
 
 ---
 
-# xaringan
+# tidying data
 
-- The presentation is created using the `xaringan` package
+- The city in which each race was held is mutated as race_city in order to get a variable represents different race tracks.
 
-- Use `---` to separate slides and `--` for incremental builds
+- A few cities which had the largest number of races is selected to prevent effects of track difference.
 
---
+- A graph showcasing the evolution of rank 1 times over the seasons in selected cities is created.
 
-- Like this
-
----
-
-# Layouts
-
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns $^*$
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
+- Different lines are plotted correspond to each city.
 
 ---
-
-# Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
-
----
-
-# Plots
-
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-iris_modified <- iris %>%
-  mutate(Species = fct_other(Species, keep = "setosa"))
-```
-
-```{r plot-iris, echo = FALSE}
-# Code hidden with echo = FALSE
-# Uses modified iris dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(data = iris_modified, mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() + 
-  theme_minimal() # theme options: https://ggplot2.tidyverse.org/reference/ggtheme.html
-```
-
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
-```
-]
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r iris-table, echo = FALSE}
-kable(head(iris), format = "html")
-```
-
----
-
-# Images
-
-```{r castle, echo = FALSE, out.width = "55%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("img/edinburgh-castle.jpg")
-```
-
-Or you can also include a full page image. See next slide.
-
----
-
 
 class: inverse, center, middle
-background-image: url(img/edinburgh-castle.jpg)
-background-size: contain
----
 
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+# Prediction
 
 ---
 
-# Feeling adventurous?
+# Our expectations
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
+We assume that rank 1 times would go down over the seasons <br> as the drivers gain more experience with the tracks and as the technology in the cars advances.
 
-- You are welcome to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+---
 
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
+# Graph of selected cities
 
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+```{r choose rank 1 data, message=FALSE, warning=FALSE, echo=FALSE}
+formula_e_rank1 <- filter(formula_e, rank==1) %>%
+  select(., season, race_city, time_retired) %>% arrange(season) %>%
+  mutate(time_retired = case_when(nchar(time_retired) == 9 ~ paste0("0:", time_retired),
+                                  nchar(time_retired) > 9 ~ time_retired)) %>%
+  filter(is.na(time_retired) == FALSE)
+  
+
+formula_e_rank1_mini <- formula_e_rank1 %>%
+  filter(race_city == "Berlin" | 
+           race_city == "Marrakesh" |
+           race_city == "Mexico City" |
+           race_city == "Paris")
+
+formula_e_rank1_mini <- formula_e_rank1_mini %>%
+  mutate(time_retired = as.numeric(seconds(hms(time_retired))))
+
+
+
+formula_e_rank1_mini %>%
+  ggplot(mapping = aes(x = season, y = time_retired, color = race_city, group_by=race_city)) +
+  geom_point() +
+  geom_smooth(se = FALSE, method = "lm", formula='y~x') +
+  labs(title = "Evolution of Rank 1 times over time in selected cities",
+       x = "Season",
+       y = "Time (s)",
+       color = "Race City")
+  
+```
+
+---
+
+# Tidy "time_retired"
+
+- In order to obtain some more conclusive results, we decided to utilise all of the race times.
+
+.pull-left[
+- haven't find a function to change the format of "+(mm:)ss.sss" directly <br> 
+- original data not in uniform format
+]
+.pull-right[
+e.g. <br> 
+56:27.535  -> 56:27:535 <br> 
++1:27.0092 -> +1:27.009,2 <br>
+47:02.511  -> 47'02.511
+]
+
+```{r tidy retired_time, echo=FALSE}
+formula_e_tidy<- formula_e %>% 
+  filter(rank != "DSQ") %>%
+  filter(rank != "NC") %>%
+  filter(nchar(time_retired) >= 4) %>% 
+  filter(grepl("a", time_retired) == FALSE) %>% 
+  filter(str_detect(time_retired, "^[[:alpha:]]") == FALSE) %>% 
+  mutate(race_date = ymd(race_date)) %>% 
+  arrange(race_date)
+
+formula_e_tidy$id <- c(1:nrow(formula_e_tidy))
+
+formula_e_tidy[311,13] <- "56:27.535"
+formula_e_tidy[323,13] <- "+1:01.365"
+formula_e_tidy[324,13] <- "+1:09.646"
+formula_e_tidy[471,13] <- "+39.137"
+formula_e_tidy[472,13] <- "+55.189"
+formula_e_tidy[548,13] <- "+1:13.880"
+formula_e_tidy[549,13] <- "+1:31.382"
+formula_e_tidy[662,13] <- "47:02.511"
+formula_e_tidy[835,13] <- "+1:27.00912"
+```
+```{r create object for time calculation, echo=FALSE}
+formula_e_time <- select(formula_e_tidy, race_date, id, time_retired) %>% 
+  mutate(tidying_time = gsub("s", "", time_retired, fixed=TRUE)) %>% 
+  mutate(finish_time = gsub(" ", "", tidying_time)) %>% 
+  mutate(list_of_time = strsplit(gsub(",", "", finish_time), ":")) %>% 
+  mutate(finish_hour = 0) %>% 
+  mutate(finish_minute = 0) %>% 
+  mutate(finish_second = 0.0) %>% 
+  mutate(second_behind = 0.0) %>%
+  mutate(total_second = 0.0) %>% 
+  arrange(race_date)
+```
+```{r calculation, echo=FALSE}
+i <- 1
+while (i <= nrow(formula_e_time)){
+  formula_e_time[i,7] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,8] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.numeric(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.numeric(formula_e_time[i,6][[1]][1]), 
+    TRUE ~ 0)
+  formula_e_time[i,9] <- case_when(
+    length(formula_e_time[i,6][[1]]) == 3 ~ as.double(formula_e_time[i,6][[1]][3]), 
+    length(formula_e_time[i,6][[1]]) == 2 ~ as.double(formula_e_time[i,6][[1]][2]), 
+    length(formula_e_time[i,6][[1]]) == 1 ~ as.double(formula_e_time[i,6][[1]][1]))
+  i <- i+1
+}
+
+bufferdate <- 0
+buffer_hour <- 0
+buffer_minute <- 0
+buffer_second <- 0
+i <- 1
+while (i <= nrow(formula_e_time)){
+  if (bufferdate != formula_e_time[i,1]){
+    bufferdate <- formula_e_time[i,1] 
+    buffer_hour <- formula_e_time[i,7] 
+    buffer_minute <- formula_e_time[i,8] 
+    buffer_second <- formula_e_time[i,9] 
+    formula_e_time[i,11] <- 3600*buffer_hour + 60*buffer_minute + buffer_second
+  }else{
+    formula_e_time[i,10] <- 3600*formula_e_time[i,7] + 60*formula_e_time[i,8] + formula_e_time[i,9]
+    formula_e_time[i,11] <- 3600*(buffer_hour + formula_e_time[i,7]) + 60*(buffer_minute + formula_e_time[i,8]) + buffer_second + formula_e_time[i,9]
+  }
+  i <- i+1
+}
+```
+```{r joining result to formula_e_tidy, echo=FALSE}
+formula_e_time <- select(formula_e_time, id, second_behind, total_second)
+formula_e_tidy = inner_join(formula_e_tidy, formula_e_time, by = "id")
+```
+```{r, echo=FALSE}
+a <- formula_e_tidy %>%
+  group_by(race_date) %>% 
+  summarise(avg_sec_b = mean(second_behind), 
+            med_sec_b = median(second_behind), 
+            sd_sec_b = sd(second_behind), 
+            min_sec = min(total_second), 
+            avg_sec = mean(total_second), 
+            med_sec = median(total_second), 
+            max_sec = max(total_second))
+
+race_statistics <- count(formula_e_tidy, race_date) 
+race_statistics <- left_join(race_statistics, a, by = "race_date")
+```
+---
+
+# Mean time to finish the race vs. Date the race held
+
+```{r investigations about time distribution, echo =FALSE, warning=FALSE}
+ggplot(race_statistics, 
+       aes(x = race_date, 
+           y = avg_sec, 
+           colour = avg_sec_b)) + 
+  geom_point() + 
+  geom_smooth(method = "glm", formula = "y ~ x") +
+  labs(x = "Date", 
+       y = "Mean Time to Finish the Race (s)", 
+       colour = "Mean Time Other Drivers
+Left Behind (s)")
+```
+---
+
+# Are Cars Different?
+
+We wanted to conduct research in was whether different teams build their cars differently and how this would affect their probability of achieving a high rank on certain tracks.
+
+---
+# Our Prediction
+
+If a team performs better on tracks with many long straight lines than on tracks with many turns, then it may suggest that this team builds cars with high top speed and acceleration in a straight line, but poorer maneuverability
+
+---
+
+.pull-left[
+```{r top 5 frequency, echo=FALSE, warning=FALSE, message=FALSE}
+
+formula_e_with_nrank <- formula_e %>%
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank = as.numeric(rank)) 
+
+top_5_teams <- formula_e_with_nrank %>%
+  filter(nrank <= 5) %>%
+  select(season, race_city, team, nrank) %>%
+  arrange(season, race_city, nrank)
+
+top_5_teams_summary <- top_5_teams %>%
+  group_by(season, race_city, team) %>%
+      mutate(team = case_when(team == "Audi Sport ABT" ~ "Audi",
+                            team == "e.dams-Renault" ~ "e.Dams-Renault",
+                            TRUE ~ team)) %>%
+  count()
+
+#print(top_5_teams_summary)
+
+selected_cities <- c("Mexico City", "Berlin")#Berlin is more staight
+
+selected_cities_data <- top_5_teams_summary %>%
+  filter(race_city %in% selected_cities)
+
+top_teams_selected_cities <- selected_cities_data %>%
+  group_by(team) %>%
+  summarise(total_frequency = sum(n), .groups = "keep") %>%
+  top_n(3, total_frequency)
+
+filtered_data <- selected_cities_data %>%
+  filter(team %in% top_teams_selected_cities$team)
+
+histogram_top_teams_selected_cities <- ggplot(filtered_data, aes(x = race_city, fill = factor(team))) +
+  geom_bar(position = "dodge", stat = "count") +
+  labs(title = "Top Teams' Performance in Selected Cities",
+       x = "Race Track",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_discrete(name = "Team")
+
+#print(histogram_top_teams_selected_cities)
+
+mean_frequency_by_season <- top_5_teams_summary %>%
+  group_by(season) %>%
+  summarise(mean_frequency = mean(n), .groups = "keep")
+
+line_plot_mean_frequency <- ggplot(mean_frequency_by_season, aes(x = season, y = mean_frequency)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Mean Frequency of Top 5 Finishes by Season",
+       x = "Season",
+       y = "Mean Frequency") +
+  theme_minimal()
+
+#print(line_plot_mean_frequency)
+
+top5_by_city_and_season <- formula_e %>%
+  filter(rank %in% 1:5,race_city %in% c("Mexico City", "Berlin")) %>%
+  group_by(season,race_city,team) %>%
+  summarise(total_top5_count = n(), .groups = "keep") %>%
+  arrange(season,race_city,team)
+
+sum_of_seasons <- formula_e %>%
+  filter(rank %in% 1:5, race_city %in% c("Mexico City", "Berlin")) %>% 
+  group_by(race_city,team) %>%
+  summarise(total_top5_count = sum(rank %in% 1:5), .groups = "keep")
+
+  #print(top5_by_city_and_season)
+
+  #print(sum_of_seasons)
+  #Berlin - 6, mexico - 5
+
+  
+  top_5_teams_summary <- top_5_teams_summary %>%
+    filter( race_city %in% c("Mexico City", "Berlin"))
+  
+  top_5_mean_totals <- top_5_teams_summary %>%
+    group_by(race_city, team) %>%
+    summarise(total = sum(n)) %>%
+    mutate(mean_total = case_when(race_city == "Berlin" ~ total / 6,
+                                  race_city == "Mexico City" ~ total / 5)) %>%
+    filter(mean_total > 0.2)
+
+#print(top_5_mean_totals) 
+  
+  top_5_mean_totals %>%
+    ggplot(mapping = aes(x = team, y = mean_total, fill = team)) +
+    geom_bar(stat = "identity")+
+    facet_grid(cols = vars(race_city)) + 
+    coord_flip() +
+    labs(
+         x = "Proportion of races where top 5 rank was achieved",
+         y = "Team") + 
+    guides(fill = "none")
+    
+
+```
+]
+.pull-right[
+Berlin track: 10 corners <br> 
+Mexico track: 16 corners
+]
+
+---
+
+# Model predicting "time_retired" variable
+
+```{r calculate average rank, include=FALSE}
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(team, nrank) %>% 
+  group_by(team) %>% 
+  summarise(vAverage_Team_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "team")
+
+formu <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>% 
+  mutate(nrank=as.numeric(rank)) %>% 
+  select(driver, nrank) %>% 
+  group_by(driver) %>% 
+  summarise(Average_rank=mean(nrank, na.rm = TRUE))
+formula_e <- left_join(formula_e, formu, by = "driver")
+```
+
+```{r Prepare the data required for modeling, message=FALSE, warning=FALSE, include=FALSE}
+glimpse(formula_e)
+
+data <- formula_e %>% 
+  filter(is.numeric(as.numeric(rank))) %>%
+  mutate(date = ymd(race_date),
+         time_retired = as.numeric(seconds(hms(time_retired))),
+         rank = as.numeric(rank),
+         city = case_when(
+           grepl("Berlin race",race_city) ~ "Berlin",
+           grepl("Diriyah",race_city) ~ "Diriyah",
+           grepl("Hong Kong",race_city) ~ "Hong Kong",
+           grepl("London",race_city) ~ "London",
+           grepl("New York",race_city) ~ "New York",
+           grepl("Montreal",race_city) ~ "Montreal",
+           TRUE ~ race_city),
+         is_top5 = case_when(
+           rank <= 5 ~ "1",
+           TRUE ~ "0"),
+         is_top5 = fct_relevel(is_top5,"1","0"),
+         vaverage_team_rank = vAverage_Team_rank,
+         average_rank = Average_rank
+         ) %>% 
+  select(season,race_num,date,team_group,rank,time_retired,points,city,is_top5,vaverage_team_rank,average_rank)
+
+data <- drop_na(data)
+knitr::kable(head(data,10))
+
+set.seed(2023)
+data_split <- initial_split(data)
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+,pull-left[
+```{r linear model, message=FALSE, warning=FALSE, echo=FALSE}
+formula_e_linear_rec <- recipe(time_retired ~ ., data = data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_linear_mod <- linear_reg() %>% 
+  set_engine("lm")
+
+formula_e_linear_wflow <- workflow() %>% 
+  add_model(formula_e_linear_mod) %>% 
+  add_recipe(formula_e_linear_rec)
+
+formula_e_linear_fit <- formula_e_linear_wflow %>% 
+  fit(data = train_data)
+
+#tidy(formula_e_linear_fit)
+
+formula_e_linear_pred <- predict(formula_e_linear_fit, test_data) %>% 
+  bind_cols(test_data) 
+
+#formula_e_linear_pred
+
+num <- 1:length(formula_e_linear_pred$.pred)
+ggplot(formula_e_linear_pred) + 
+  geom_line(aes(x = num, y = .pred),color = "red")+
+  geom_line(aes(x = num, y = time_retired),color = "green")+
+  labs(title = "Predictions of linear models on the test_data",
+       x = NULL,
+       y = "Time Retired")
+```
+]
+.pull-right[
+```{r show model's R-squared vulue, echo = TRUE}
+glance(formula_e_linear_fit)$adj.r.squared
+```
+]
+---
+
+# Model predicting probability of reaching top 5
+
+.pull-left[
+```{r logistic model, message=FALSE, warning=FALSE, echo=FALSE}
+formula_e_logistic_rec <- recipe(is_top5 ~ ., data = data) %>%
+  step_rm(rank,date,points,city) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+formula_e_logistic_mod <- logistic_reg() %>% 
+  set_engine("glm")
+
+formula_e_logistic_wflow <- workflow() %>% 
+  add_model(formula_e_logistic_mod) %>% 
+  add_recipe(formula_e_logistic_rec)
+
+formula_e_logistic_fit <- formula_e_logistic_wflow %>% 
+  fit(data = train_data)
+
+#knitr::kable(tidy(formula_e_logistic_fit))
+
+formula_e_logistic_pred <- predict(formula_e_logistic_fit, test_data, type = "prob") %>% 
+  bind_cols(test_data) 
+
+#formula_e_logistic_pred
+
+formula_e_logistic_pred %>%
+  roc_curve(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  ) %>%
+  autoplot()
+```
+]
+.pull-right[
+```{r echo = TRUE}
+formula_e_logistic_pred %>%
+  roc_auc(
+    truth = is_top5,
+    .pred_0,
+    event_level = "second"
+  )
+
+```
+]
+---
+
+# Reference
+
+Dataset: 
+
+MLandry, 2020, Formula E Championship, Electronic Dataset, Kaggle.com, <https://www.kaggle.com/datasets/mlandry/formula-e-championship>, accessed 2023.10.20
+
+References: 
+
+Wikipedia, 2023, List of Formula E ePrix, Wikipedia, <https://en.wikipedia.org/wiki/List_of_Formula_E_ePrix>, accessed at 2023.111.26
+
+title image:
+
+Racingnews365, 2021, 2022 Formula E drivers, <https://racingnews365.com/2022-formula-e-drivers>, accessed at 2023.11.30

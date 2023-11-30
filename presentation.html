@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Presentation title</title>
+    <title>An Analysis of factors that affect   race completion times and probability   of winning in Formula E</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Team name   Names of team members" />
-    <meta name="date" content="2023-11-10" />
+    <meta name="author" content="Team name   Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun" />
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -13,19 +12,16 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Presentation title
-]
-.subtitle[
-## Presentation subtitle (if any)
+# An Analysis of factors that affect <br> race completion times and probability <br> of winning in Formula E
 ]
 .author[
-### Team name <br> Names of team members
+### Team name <br> Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun
 ]
 .institute[
 ### University of Edinburgh
 ]
 .date[
-### 2023-11-10
+### 29 Nov 2023`
 ]
 
 ---
@@ -44,33 +40,45 @@ class: center, middle, inverse, title-slide
 
 class: center, middle
 
-## A statement of the overall goal / research question
-
+- How do average race completion times vary over time?
+- What factors affect the rank achieved by race drivers?
+- To predict which teams are more likely to win certain races.
+- To gain insights into how some teams build their cars.
 ---
 
 class: inverse, center, middle
 
-# Section title
+# Data Source
 
 ---
 
-# Hello World
+# Formula E Championship dataset `\(^*\)`
 
-- Click the `Knit` button to compile your presentation
+.pull-left[
+The main variables of interest for our investigation: 
+]
+.pull-right[
+-time_retired (detailing the time taken to complete the race) &lt;br&gt;
+-team &lt;br&gt;
+-race_name (including the city in which the race took place as well as
+the year) &lt;br&gt;
+-rank
+]
 
-- Make sure to commit and push all resulting files to your GitHub repo
-
+.footnote[
+[*] Reference at the last slide
+]
 ---
 
 class: inverse, middle, center
 
-# Using xaringan
+# Investigate
 
 ---
 
-# xaringan
+# tidying data
 
-- The presentation is created using the `xaringan` package
+- The city in which each race was held is mutated as race_city in order to get a variable represents different race tracks.
 
 - Use `---` to separate slides and `--` for incremental builds
 
