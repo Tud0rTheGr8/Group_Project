@@ -57,10 +57,11 @@ style_xaringan(
 
 class: middle
 
+# What factors affect the rank achieved by race drivers?
+
 - How do average race completion times vary over time?
-- What factors affect the rank achieved by race drivers?
-- To predict which teams are more likely to win certain races.
 - To gain insights into how some teams build their cars.
+- To predict which teams are more likely to win certain races.
 ---
 
 class: inverse, center, middle
