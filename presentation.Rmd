@@ -52,7 +52,7 @@ style_xaringan(
 )
 ```
 
-class: center
+class: middle
 
 - How do average race completion times vary over time?
 - What factors affect the rank achieved by race drivers?
@@ -107,6 +107,7 @@ class: inverse, center, middle
 # Prediction
 
 ---
+class: middle
 
 # Our expectations
 
@@ -253,16 +254,15 @@ race_statistics <- left_join(race_statistics, a, by = "race_date")
 ```
 ---
 
-# Mean time to finish the race vs. Date the race held
-
-```{r investigations about time distribution, echo =FALSE, warning=FALSE}
+```{r investigations about time distribution, echo =FALSE, warning=FALSE, out.height = "75%"}
 ggplot(race_statistics, 
        aes(x = race_date, 
            y = avg_sec, 
            colour = avg_sec_b)) + 
   geom_point() + 
   geom_smooth(method = "glm", formula = "y ~ x") +
-  labs(x = "Date", 
+  labs(title = "Mean time to finish the race vs. Date the race held", 
+       x = "Date", 
        y = "Mean Time to Finish the Race (s)", 
        colour = "Mean Time Other Drivers
 Left Behind (s)")
@@ -280,7 +280,6 @@ If a team performs better on tracks with many long straight lines than on tracks
 
 ---
 
-.pull-left[
 ```{r top 5 frequency, echo=FALSE, warning=FALSE, message=FALSE}
 
 formula_e_with_nrank <- formula_e %>%
@@ -379,12 +378,9 @@ sum_of_seasons <- formula_e %>%
     
 
 ```
-]
-.pull-right[
+
 Berlin track: 10 corners <br> 
 Mexico track: 16 corners
-]
-
 ---
 
 # Model predicting "time_retired" variable
@@ -440,8 +436,8 @@ data_split <- initial_split(data)
 train_data <- training(data_split)
 test_data  <- testing(data_split)
 ```
-,pull-left[
-```{r linear model, message=FALSE, warning=FALSE, echo=FALSE}
+
+```{r linear model, message=FALSE, warning=FALSE, echo=FALSE, out.width = "55%", out.height = "80%"}
 formula_e_linear_rec <- recipe(time_retired ~ ., data = data) %>%
   step_dummy(all_nominal(), -all_outcomes())
 
@@ -470,18 +466,16 @@ ggplot(formula_e_linear_pred) +
        x = NULL,
        y = "Time Retired")
 ```
-]
-.pull-right[
-```{r show model's R-squared vulue, echo = TRUE}
+
+```{r echo = FALSE}
 glance(formula_e_linear_fit)$adj.r.squared
 ```
-]
 ---
 
 # Model predicting probability of reaching top 5
 
 .pull-left[
-```{r logistic model, message=FALSE, warning=FALSE, echo=FALSE}
+```{r logistic model, message=FALSE, warning=FALSE, echo=FALSE, out.width = "120%"}
 formula_e_logistic_rec <- recipe(is_top5 ~ ., data = data) %>%
   step_rm(rank,date,points,city) %>% 
   step_dummy(all_nominal(), -all_outcomes())
@@ -513,7 +507,7 @@ formula_e_logistic_pred %>%
 ```
 ]
 .pull-right[
-```{r echo = TRUE}
+```{r echo = FALSE}
 formula_e_logistic_pred %>%
   roc_auc(
     truth = is_top5,

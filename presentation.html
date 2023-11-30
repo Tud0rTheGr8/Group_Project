@@ -38,7 +38,7 @@ class: center, middle, inverse, title-slide
 
 
 
-class: center, middle
+class: middle
 
 - How do average race completion times vary over time?
 - What factors affect the rank achieved by race drivers?
@@ -58,11 +58,11 @@ class: inverse, center, middle
 The main variables of interest for our investigation: 
 ]
 .pull-right[
--time_retired (detailing the time taken to complete the race) &lt;br&gt;
--team &lt;br&gt;
--race_name (including the city in which the race took place as well as
+- time_retired (detailing the time taken to complete the race) &lt;br&gt;
+- team &lt;br&gt;
+- race_name (including the city in which the race took place as well as
 the year) &lt;br&gt;
--rank
+- rank
 ]
 
 .footnote[
@@ -80,194 +80,118 @@ class: inverse, middle, center
 
 - The city in which each race was held is mutated as race_city in order to get a variable represents different race tracks.
 
-- Use `---` to separate slides and `--` for incremental builds
+- A few cities which had the largest number of races is selected to prevent effects of track difference.
 
---
+- A graph showcasing the evolution of rank 1 times over the seasons in selected cities is created.
 
-- Like this
-
----
-
-# Layouts
-
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns `\(^*\)`
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
+- Different lines are plotted correspond to each city.
 
 ---
-
-# Code
-
-
-```r
-# a boring regression
-model &lt;- lm(dist ~ speed, data = cars)
-tidy(model)
-```
-
-```
-## # A tibble: 2 × 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
-## 2 speed           3.93     0.416      9.46 1.49e-12
-```
-
-```r
-glance(model)
-```
-
-```
-## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
-## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
-```
-
----
-
-# Plots
-
-
-
-&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="80%" /&gt;
-
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
-]
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-
-# Images
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="img/edinburgh-castle.jpg" alt="Image credit: Photo by Jörg Angeli on Unsplash." width="55%" /&gt;
-&lt;p class="caption"&gt;Image credit: Photo by Jörg Angeli on Unsplash.&lt;/p&gt;
-&lt;/div&gt;
-
-Or you can also include a full page image. See next slide.
-
----
-
 
 class: inverse, center, middle
-background-image: url(img/edinburgh-castle.jpg)
-background-size: contain
+
+# Prediction
+
 ---
+class: middle
 
-# Math Expressions
+# Our expectations
 
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &amp;#36;\alpha+\beta$ renders `\(\alpha+\beta\)`. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-`$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$`
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+We assume that rank 1 times would go down over the seasons &lt;br&gt; as the drivers gain more experience with the tracks and as the technology in the cars advances.
 
 ---
 
-# Feeling adventurous?
+# Graph of selected cities
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
+&lt;img src="presentation_files/figure-html/choose rank 1 data-1.png" width="80%" /&gt;
 
-- You are welcome to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+---
 
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
+# Tidy "time_retired"
 
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+- In order to obtain some more conclusive results, we decided to utilise all of the race times.
+
+.pull-left[
+- haven't find a function to change the format of "+(mm:)ss.sss" directly &lt;br&gt; 
+- original data not in uniform format
+]
+.pull-right[
+e.g. &lt;br&gt; 
+56:27.535  -&gt; 56:27:535 &lt;br&gt; 
++1:27.0092 -&gt; +1:27.009,2 &lt;br&gt;
+47:02.511  -&gt; 47'02.511
+]
+
+
+
+
+
+
+---
+
+&lt;img src="presentation_files/figure-html/investigations about time distribution-1.png" width="80%" height="75%" /&gt;
+---
+
+# Are Cars Different?
+
+We wanted to conduct research in was whether different teams build their cars differently and how this would affect their probability of achieving a high rank on certain tracks.
+
+---
+# Our Prediction
+
+If a team performs better on tracks with many long straight lines than on tracks with many turns, then it may suggest that this team builds cars with high top speed and acceleration in a straight line, but poorer maneuverability
+
+---
+
+&lt;img src="presentation_files/figure-html/top 5 frequency-1.png" width="80%" /&gt;
+
+Berlin track: 10 corners &lt;br&gt; 
+Mexico track: 16 corners
+---
+
+# Model predicting "time_retired" variable
+
+
+
+
+
+&lt;img src="presentation_files/figure-html/linear model-1.png" width="55%" height="80%" /&gt;
+
+
+```
+## [1] 0.7635778
+```
+---
+
+# Model predicting probability of reaching top 5
+
+.pull-left[
+&lt;img src="presentation_files/figure-html/logistic model-1.png" width="120%" /&gt;
+]
+.pull-right[
+
+```
+## # A tibble: 1 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 roc_auc binary         0.904
+```
+]
+---
+
+# Reference
+
+Dataset: 
+
+MLandry, 2020, Formula E Championship, Electronic Dataset, Kaggle.com, &lt;https://www.kaggle.com/datasets/mlandry/formula-e-championship&gt;, accessed 2023.10.20
+
+References: 
+
+Wikipedia, 2023, List of Formula E ePrix, Wikipedia, &lt;https://en.wikipedia.org/wiki/List_of_Formula_E_ePrix&gt;, accessed at 2023.111.26
+
+title image:
+
+Racingnews365, 2021, 2022 Formula E drivers, &lt;https://racingnews365.com/2022-formula-e-drivers&gt;, accessed at 2023.11.30
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
