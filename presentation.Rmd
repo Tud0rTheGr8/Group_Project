@@ -47,8 +47,11 @@ formula_e %>% mutate(race_date = ymd(race_date)) %>% arrange(race_date)
 
 #Background image
 style_xaringan(
-  title_slide_text_color = "white", 
-  title_slide_background_image = "img/formula_e.png"
+  title_slide_text_color = "black", 
+  title_slide_background_color = "#fAfAfA",
+  title_slide_background_image = "img/formulaE_logopng.png",
+  title_slide_background_size = "20%",
+  title_slide_background_position = "7% 98%"
 )
 ```
 
