@@ -380,8 +380,8 @@ sum_of_seasons <- formula_e %>%
     facet_grid(cols = vars(race_city)) + 
     coord_flip() +
     labs(
-         x = "Proportion of races where top 5 rank was achieved",
-         y = "Team") + 
+         x = "Team",
+         y = "Proportion of races where top 5 rank was achieved") + 
     guides(fill = "none")
     
 
