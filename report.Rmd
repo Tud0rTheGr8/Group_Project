@@ -1,6 +1,6 @@
 ---
 title: "An Analysis of factors that affect race completion times and probability of winning in Formula E"
-author: "by Team-Name: Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun"
+author: "by Error 404: Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun"
 date: "29 Nov 2023`"
 output: html_document
 ---

@@ -1,6 +1,6 @@
 ---
 title: "IDS investigation worksheet"
-author: "by Knights Templar: Tudor,Mengchuan Sun, Jiacheng Zhang,Binxi Yang"
+author: "by Error 404: Tudor,Mengchuan Sun, Jiacheng Zhang,Binxi Yang"
 date: "`r Sys.Date()`"
 output: html_document
 ---
