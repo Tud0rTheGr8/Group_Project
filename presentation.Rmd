@@ -2,7 +2,7 @@
 title: "An Analysis of factors that affect <br> race completion times and probability <br> of winning in Formula E"
 author: "Team name <br> Tudor Cucu, Binxi Yang, Jiacheng Zhang, Mengchuan Sun"
 institute: "University of Edinburgh"
-date: "29 Nov 2023`"
+date: "29 Nov 2023"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -534,4 +534,4 @@ Wikipedia, 2023, List of Formula E ePrix, Wikipedia, <https://en.wikipedia.org/w
 
 title image:
 
-Racingnews365, 2021, 2022 Formula E drivers, <https://racingnews365.com/2022-formula-e-drivers>, accessed at 2023.11.30
+WCPSeries, 2023, [FORMULA E] SEASON 2016/17, <https://images.app.goo.gl/tjoG3zAtxxHeBNX69>, accessed at 2023.11.30
